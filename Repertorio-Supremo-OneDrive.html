@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repertório — Jurisprudência</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.18.0/lib/msal-browser.min.js"></script>
+<style>
+/* ============================================================
+   PALETA — palha / creme / marrom. Contraste AAA no corpo.
+   ============================================================ */
+:root{
+  --paper:#F5EFE0;        /* palha */
+  --paper-2:#EDE4CF;      /* palha sombreada */
+  --surface:#FFFCF4;      /* creme claro (cartão) */
+  --surface-2:#F7F1E1;
+  --ink:#2B1D0E;          /* marrom quase preto — 13.8:1 sobre --paper */
+  --ink-soft:#4A3720;     /* marrom médio — 8.4:1 */
+  --muted:#6B5637;        /* marrom suave — 5.6:1 */
+  --line:#DCCEAF;
+  --line-strong:#C8B58C;
+  --accent:#7A4E1D;       /* marrom âmbar escuro */
+  --accent-2:#9C6B2F;
+  --accent-soft:#EFE0C4;
+  --on-accent:#FFF8EA;
+  --again:#8E2F22;
+  --hard:#8A6112;
+  --good:#2F5C3F;
+  --easy:#2A5470;
+  --flagged:#A3421C;
+  --shadow:0 1px 2px rgba(60,40,12,.05), 0 6px 18px rgba(60,40,12,.07);
+  --radius:12px;
+  --fscale:1;
+}
+:root[data-theme="sepia"]{
+  --paper:#EFE3CC; --paper-2:#E5D7BA; --surface:#FBF4E4; --surface-2:#F2E9D4;
+  --line:#D3C09B; --line-strong:#BFA97E;
+}
+:root[data-theme="noite"]{
+  --paper:#17130D; --paper-2:#1F1A12; --surface:#221C13; --surface-2:#2B2418;
+  --ink:#F3E9D6; --ink-soft:#DFD1B6; --muted:#B0A085; --line:#3A3122; --line-strong:#4C4130;
+  --accent:#D9AE6A; --accent-2:#E8C489; --accent-soft:#3A2F1D; --on-accent:#1B1409;
+  --again:#E08575; --hard:#D6AC55; --good:#7FBE97; --easy:#7FAFD0; --flagged:#E5936B;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 8px 22px rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:calc(15px * var(--fscale));
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+}
+h1,h2,h3,h4{font-family:'Lora',Georgia,serif; margin:0; font-weight:600; color:var(--ink);}
+button,input,textarea,select{font-family:inherit; font-size:inherit; color:var(--ink);}
+button{cursor:pointer;}
+:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:4px;}
+::selection{background:var(--accent); color:var(--on-accent);}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+
+/* ===================== LAYOUT ===================== */
+.app{display:flex; min-height:100vh;}
+
+.brand{padding:0 6px 2px;}
+.brand h1{font-size:1.22rem; letter-spacing:.2px;}
+.brand h1 em{color:var(--accent); font-style:italic; font-weight:500;}
+.brand p{margin:2px 0 0; font-size:.72rem; color:var(--muted); letter-spacing:.3px;}
+
+.nav{display:flex; flex-direction:column; gap:1px;}
+.navbtn{
+  display:flex; align-items:center; gap:9px; width:100%; text-align:left; background:none; border:none;
+  color:var(--ink-soft); padding:8px 10px; border-radius:8px; font-size:.9rem; font-weight:500;
+  transition:background-color .15s, color .15s;
+}
+.navbtn:hover{background:var(--surface-2);}
+.navbtn.active{background:var(--accent-soft); color:var(--accent); font-weight:700;}
+.navbtn .ico{width:17px; text-align:center; opacity:.8;}
+.navbtn .kbd{margin-left:auto; font-size:.68rem; color:var(--muted); opacity:.7;}
+
+.side-sep{border-top:1px solid var(--line); margin:4px 0;}
+.side-head{display:flex; justify-content:space-between; align-items:center; padding:0 6px;}
+.side-head span{font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; font-weight:700;}
+.mini{background:none; border:1px solid var(--line-strong); color:var(--ink-soft); border-radius:6px; padding:2px 7px; font-size:.72rem; font-weight:600;}
+.mini:hover{background:var(--accent-soft); border-color:var(--accent);}
+
+.deckfilter{width:100%; padding:6px 9px; border:1px solid var(--line); border-radius:7px; background:var(--surface-2); font-size:.82rem;}
+.decklist{display:flex; flex-direction:column; gap:1px; overflow-y:auto; flex:1; min-height:60px;}
+.deckrow{
+  display:flex; align-items:center; gap:6px; padding:7px 9px; border-radius:7px; font-size:.85rem;
+  border:1px solid transparent;
+}
+.deckrow:hover{background:var(--surface-2);}
+.deckrow.active{background:var(--accent-soft); border-color:var(--line-strong);}
+.deckrow .dname{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer;}
+.badge{font-size:.7rem; font-weight:700; padding:1px 6px; border-radius:20px; min-width:19px; text-align:center;}
+.badge.due{background:var(--accent); color:var(--on-accent);}
+.badge.new{background:var(--accent-soft); color:var(--accent); border:1px solid var(--line-strong);}
+.badge.zero{background:var(--surface-2); color:var(--muted);}
+.side-foot{font-size:.72rem; color:var(--muted); padding:0 6px;}
+
+main{flex:1; padding:30px 38px 70px; max-width:1200px; width:100%;}
+.section{display:none;}
+.section.active{display:block; animation:fade .18s ease;}
+@keyframes fade{from{opacity:0} to{opacity:1}}
+
+.hero{display:flex; justify-content:space-between; align-items:flex-end; gap:14px; flex-wrap:wrap; margin-bottom:22px;}
+.hero h2{font-size:1.65rem; line-height:1.2;}
+.sub{color:var(--muted); font-size:.87rem; margin-top:4px;}
+.hero-actions{display:flex; gap:8px; flex-wrap:wrap;}
+
+/* ===================== COMPONENTES ===================== */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);}
+.card + .card{margin-top:16px;}
+.card h3{font-size:1rem; margin-bottom:10px;}
+
+.btn{background:var(--accent); color:var(--on-accent); border:1px solid var(--accent); padding:8px 15px; border-radius:8px; font-weight:600; font-size:.86rem;}
+.btn:hover{background:var(--accent-2); border-color:var(--accent-2);}
+.btn.ghost{background:var(--surface); color:var(--ink); border:1px solid var(--line-strong);}
+.btn.ghost:hover{background:var(--surface-2);}
+.btn.small{padding:5px 10px; font-size:.78rem;}
+.btn.danger{background:var(--surface); color:var(--again); border-color:var(--again);}
+.btn.danger:hover{background:var(--again); color:var(--on-accent);}
+.btn:disabled{opacity:.45; cursor:not-allowed;}
+
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px;}
+.stat{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:15px 17px; box-shadow:var(--shadow);}
+.stat .num{font-family:'Lora',serif; font-size:1.75rem; font-weight:700; color:var(--accent); line-height:1.1;}
+.stat .lbl{color:var(--muted); font-size:.77rem; margin-top:3px;}
+
+.deckcard{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:15px 18px; margin-bottom:9px; box-shadow:var(--shadow); transition:border-color .15s;}
+.deckcard:hover{border-color:var(--line-strong);}
+.deckcard-top{display:flex; justify-content:space-between; align-items:center; gap:12px;}
+.deckcard h3{font-size:1.02rem; margin:0; cursor:pointer;}
+.deckcard h3:hover{color:var(--accent);}
+.counts{display:flex; gap:14px; margin-top:7px; font-size:.79rem; color:var(--muted); flex-wrap:wrap;}
+.counts b{color:var(--ink); font-weight:700;}
+.counts .c-new b{color:var(--easy);} .counts .c-due b{color:var(--accent);} .counts .c-lapse b{color:var(--again);}
+
+label{display:block; font-size:.76rem; color:var(--muted); font-weight:600; margin:12px 0 4px; letter-spacing:.2px;}
+textarea, input[type=text], input[type=number], select{
+  width:100%; padding:9px 11px; border-radius:8px; border:1px solid var(--line-strong);
+  background:var(--surface-2); resize:vertical;
+}
+textarea{line-height:1.55; font-size:.88rem;}
+input[type=checkbox]{width:16px; height:16px; accent-color:var(--accent); margin-right:7px; vertical-align:-3px;}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+.row > *{flex:none;}
+.row .grow{flex:1; min-width:150px;}
+
+.tag{display:inline-block; background:var(--accent-soft); border:1px solid var(--line-strong); color:var(--accent); font-size:.71rem; font-weight:600; padding:2px 8px; border-radius:20px; margin:0 5px 5px 0;}
+.tag.plain{background:var(--surface-2); color:var(--muted); border-color:var(--line); font-weight:500;}
+.pill-toggle{background:var(--surface-2); border:1px solid var(--line-strong); color:var(--ink-soft); padding:4px 11px; border-radius:20px; font-size:.78rem; font-weight:600;}
+.pill-toggle.on{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
+
+/* ===================== ESTUDO ===================== */
+.studybox{max-width:680px; margin:0 auto;}
+.study-top{display:flex; justify-content:space-between; align-items:center; font-size:.78rem; color:var(--muted); margin-bottom:9px; gap:10px;}
+.study-counts span{margin-right:10px; font-weight:700;}
+.sc-new{color:var(--easy);} .sc-lrn{color:var(--again);} .sc-rev{color:var(--good);}
+.pbar{height:4px; background:var(--paper-2); border-radius:4px; overflow:hidden; margin-bottom:14px;}
+.pbar > i{display:block; height:100%; background:var(--accent);}
+
+.cardface{
+  background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:32px 30px;
+  min-height:210px; display:flex; flex-direction:column; justify-content:center; gap:12px; box-shadow:var(--shadow);
+  position:relative;
+}
+.cardface.flagged{border-left:4px solid var(--flagged);}
+.q{font-family:'Lora',serif; font-size:1.22rem; line-height:1.55; color:var(--ink);}
+.a{font-size:.98rem; line-height:1.68; border-top:1px dashed var(--line-strong); padding-top:16px; margin-top:4px; color:var(--ink-soft);}
+.a strong{color:var(--ink);}
+.q code,.a code{background:var(--surface-2); padding:1px 5px; border-radius:4px; font-family:ui-monospace,monospace; font-size:.9em;}
+.cloze-gap{color:var(--accent); font-weight:700; border-bottom:2px solid var(--accent);}
+.cloze-dim{opacity:.62;}
+.cloze-hit{color:var(--good); font-weight:700;}
+.src{font-size:.76rem; color:var(--muted); font-style:italic; border-top:1px solid var(--line); padding-top:10px; margin-top:4px;}
+.leech-warn{color:var(--again); font-size:.74rem; font-weight:700;}
+
+.confrow{display:flex; gap:7px; justify-content:center; margin-top:13px; flex-wrap:wrap;}
+.ratebar{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:16px;}
+.ratebtn{padding:11px 6px; border-radius:9px; border:1px solid transparent; color:var(--on-accent); font-weight:700; font-size:.85rem; text-align:center;}
+.ratebtn small{display:block; font-weight:500; opacity:.9; font-size:.71rem; margin-top:2px;}
+.ratebtn.again{background:var(--again);} .ratebtn.hard{background:var(--hard);}
+.ratebtn.good{background:var(--good);} .ratebtn.easy{background:var(--easy);}
+.ratebtn:hover{filter:brightness(1.1);}
+.reveal{width:100%; margin-top:16px; padding:13px; border-radius:9px; background:var(--ink); color:var(--paper); border:none; font-weight:700; font-size:.92rem;}
+.reveal:hover{background:var(--ink-soft);}
+.study-tools{display:flex; gap:6px; justify-content:center; margin-top:14px; flex-wrap:wrap;}
+.hint{text-align:center; font-size:.75rem; color:var(--muted); margin-top:12px;}
+.hint kbd{background:var(--surface-2); border:1px solid var(--line-strong); border-radius:4px; padding:1px 5px; font-family:inherit; font-size:.72rem;}
+.donebox{text-align:center; padding:50px 20px;}
+.donebox h2{font-size:1.5rem; margin-bottom:8px;}
+
+/* ===================== NAVEGADOR ===================== */
+.browse-bar{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; align-items:center;}
+.browse-bar input[type=text]{flex:1; min-width:180px; width:auto;}
+.browse-bar select{width:auto; min-width:120px;}
+.bulkbar{display:flex; gap:7px; flex-wrap:wrap; align-items:center; padding:9px 12px; background:var(--accent-soft); border:1px solid var(--line-strong); border-radius:9px; margin-bottom:10px; font-size:.82rem; font-weight:600;}
+.crow{display:flex; align-items:center; gap:10px; padding:9px 12px; border-bottom:1px solid var(--line);}
+.crow:last-child{border-bottom:none;}
+.crow.susp{opacity:.5;}
+.crow .cmain{flex:1; min-width:0;}
+.crow .cq{font-size:.86rem; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.crow .cmeta{font-size:.72rem; color:var(--muted); margin-top:2px; display:flex; gap:9px; flex-wrap:wrap;}
+.crow .cact{display:flex; gap:5px; flex:none;}
+.empty{text-align:center; color:var(--muted); padding:48px 20px; font-size:.9rem;}
+
+/* ===================== PAINEL ===================== */
+.heatmap{display:grid; grid-template-columns:repeat(27,1fr); gap:3px; margin-top:10px;}
+.hcell{aspect-ratio:1; border-radius:2px; background:var(--paper-2); border:1px solid transparent;}
+.chart{display:flex; align-items:flex-end; gap:3px; height:150px; border-bottom:1px solid var(--line-strong); padding-top:8px;}
+.chart .col{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%;}
+.chart .col i{display:block; width:100%; max-width:24px; background:var(--accent); border-radius:3px 3px 0 0; min-height:2px;}
+.chart .col i.alt{background:var(--accent-2);}
+.chartlabels{display:flex; gap:3px; margin-top:5px;}
+.chartlabels span{flex:1; text-align:center; font-size:.62rem; color:var(--muted); overflow:hidden;}
+.tablerow{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:.85rem;}
+.tablerow:last-child{border-bottom:none;}
+.tablerow .bad{color:var(--again); font-weight:700;}
+.tablerow .ok{color:var(--good); font-weight:700;}
+.legend{font-size:.73rem; color:var(--muted); margin-top:8px;}
+
+/* ===================== MODAL ===================== */
+.modalbg{position:fixed; inset:0; background:rgba(43,29,14,.45); display:none; align-items:center; justify-content:center; z-index:60; padding:20px;}
+.modalbg.show{display:flex;}
+.modal{background:var(--surface); border:1px solid var(--line-strong); border-radius:14px; padding:22px; max-width:580px; width:100%; max-height:86vh; overflow-y:auto; box-shadow:0 20px 50px rgba(43,29,14,.3);}
+.modal h3{font-size:1.1rem; margin-bottom:6px;}
+.modal-actions{display:flex; gap:8px; justify-content:flex-end; margin-top:18px;}
+.checklist{max-height:230px; overflow-y:auto; border:1px solid var(--line); border-radius:8px; padding:8px 10px; background:var(--surface-2);}
+.checklist label{display:flex; align-items:center; margin:0; padding:4px 0; font-size:.85rem; color:var(--ink); font-weight:500; cursor:pointer;}
+
+.toast{position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(10px); background:var(--ink); color:var(--paper); padding:10px 18px; border-radius:9px; font-size:.85rem; font-weight:600; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s; z-index:80;}
+.toast.show{opacity:1; transform:translateX(-50%);}
+
+.codebox{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px; font-family:ui-monospace,monospace; font-size:.76rem; white-space:pre-wrap; line-height:1.6; color:var(--ink-soft); overflow-x:auto;}
+
+@media (max-width:860px){
+  main{padding:20px 16px 60px;}
+  .ratebar{grid-template-columns:repeat(2,1fr);}
+}
+
+/* ============================================================
+   PAINEL LATERAL — oculto por padrão, estilo Firefox.
+   Botão discreto no canto; painel desliza; fixar fica dentro.
+   ============================================================ */
+:root{ --sbw:284px; --ease:cubic-bezier(.22,.8,.3,1); }
+
+.sb-toggle{
+  position:fixed; top:14px; left:14px; z-index:45;
+  width:36px; height:36px; display:grid; place-items:center; padding:0;
+  border-radius:10px; border:1px solid transparent;
+  background:color-mix(in srgb, var(--surface) 72%, transparent);
+  color:var(--muted); opacity:.78;
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  transition:opacity .2s, background-color .2s, border-color .2s, color .2s, transform .2s var(--ease);
+}
+.sb-toggle:hover, .sb-toggle:focus-visible{
+  opacity:1; color:var(--accent); background:var(--surface); border-color:var(--line-strong);
+  box-shadow:var(--shadow);
+}
+.sb-toggle:active{transform:scale(.94);}
+.sb-toggle svg{width:19px; height:19px; display:block;}
+.sb-toggle .pane{fill:currentColor; opacity:.28; transition:opacity .2s;}
+.sb-toggle:hover .pane{opacity:.6;}
+.sb-toggle .dot{
+  position:absolute; top:5px; right:5px; width:8px; height:8px; border-radius:50%;
+  background:var(--accent); border:1.5px solid var(--paper); display:none;
+}
+.sb-toggle.has-due .dot{display:block;}
+body.sb-open .sb-toggle{opacity:0; pointer-events:none; transform:translateX(-8px);}
+body[data-view="study"] .sb-toggle:not(:hover):not(:focus-visible){opacity:.32;}
+
+.sb-edge{position:fixed; left:0; top:0; bottom:0; width:7px; z-index:39;}
+.sb-edge[hidden]{display:none;}
+
+.sb-scrim{
+  position:fixed; inset:0; z-index:41; background:rgba(34,22,8,.30);
+  -webkit-backdrop-filter:blur(1.5px); backdrop-filter:blur(1.5px);
+  opacity:0; pointer-events:none; transition:opacity .22s ease;
+}
+.sb-scrim.show{opacity:1; pointer-events:auto;}
+
+.sidebar{
+  position:fixed; left:0; top:0; height:100vh; height:100dvh; width:var(--sbw); max-width:92vw;
+  z-index:50; display:flex; flex-direction:column; gap:14px;
+  padding:16px 14px 14px; overflow-y:auto; overscroll-behavior:contain;
+  background:var(--surface-2); border-right:1px solid var(--line);
+  transform:translateX(-102%); visibility:hidden;
+  transition:transform .26s var(--ease), visibility 0s linear .26s, box-shadow .26s;
+}
+.sidebar.open{
+  transform:none; visibility:visible; transition:transform .26s var(--ease), visibility 0s;
+  box-shadow:10px 0 40px rgba(43,29,14,.22);
+}
+.sidebar.pinned{box-shadow:none;}
+.sb-top{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 2px 0 6px;}
+.sb-actions{display:flex; gap:2px; flex:none;}
+.sb-ibtn{
+  width:30px; height:30px; display:grid; place-items:center; padding:0; border-radius:8px;
+  border:1px solid transparent; background:none; color:var(--muted);
+  transition:background-color .15s, color .15s, border-color .15s;
+}
+.sb-ibtn:hover{background:var(--accent-soft); color:var(--accent);}
+.sb-ibtn svg{width:16px; height:16px; display:block; transition:transform .25s var(--ease);}
+.sb-ibtn.on{background:var(--accent); color:var(--on-accent);}
+.sb-ibtn.on svg{transform:rotate(-45deg);}
+.brand{padding:0;}
+
+.navbtn .ico{width:18px; height:18px; display:grid; place-items:center; opacity:.85; flex:none;}
+.navbtn .ico svg{width:17px; height:17px; display:block;}
+.navbtn.active .ico{opacity:1;}
+
+.sb-opt{
+  display:flex; align-items:center; gap:8px; font-size:.74rem; color:var(--muted);
+  padding:0 6px; cursor:pointer; user-select:none; font-weight:400; margin:0;
+}
+.sb-opt input{accent-color:var(--accent); margin:0; cursor:pointer;}
+.sb-hint{font-size:.68rem; color:var(--muted); opacity:.85; padding:0 6px; line-height:1.5;}
+.sb-hint kbd{
+  font-family:inherit; font-size:.66rem; border:1px solid var(--line-strong); border-bottom-width:2px;
+  border-radius:4px; padding:0 4px; background:var(--surface);
+}
+
+main{margin-left:0; padding-left:68px; transition:margin-left .26s var(--ease), padding-left .26s var(--ease);}
+body.sb-pinned main{margin-left:var(--sbw); padding-left:38px;}
+body.sb-pinned .sb-toggle{opacity:0; pointer-events:none;}
+
+@media (max-width:860px){
+  .sb-edge{display:none;}
+  main{margin-left:0!important; padding:64px 16px 60px;}
+  .sb-opt{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <button class="sb-toggle" id="sbToggle" aria-controls="sidebar" aria-expanded="false" aria-label="Abrir painel lateral" title="Abrir painel (Ctrl+B)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="3"/><path class="pane" d="M4.6 5.8h4.4v12.4H7.5a2.9 2.9 0 0 1-2.9-2.9V8.7a2.9 2.9 0 0 1 0-2.9z" stroke="none"/><path d="M9.5 5.5v13"/></svg>
+    <span class="dot"></span>
+  </button>
+  <div class="sb-edge" id="sbEdge" hidden></div>
+  <div class="sb-scrim" id="sbScrim"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Painel lateral" inert>
+    <div class="sb-top">
+      <div class="brand"><h1>Repertório <em>jurisprudência</em></h1></div>
+      <div class="sb-actions">
+        <button class="sb-ibtn" id="pinSidebarBtn" aria-pressed="false" title="Fixar painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg></button>
+        <button class="sb-ibtn" id="sbClose" title="Recolher (Esc)" aria-label="Recolher painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+    </div>
+
+    <nav class="nav" id="nav">
+      <button class="navbtn active" data-nav="home"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Início<span class="kbd">H</span></button>
+      <button class="navbtn" data-nav="study"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg></span>Estudar<span class="kbd">S</span></button>
+      <button class="navbtn" data-nav="add"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>Criar / Importar<span class="kbd">A</span></button>
+      <button class="navbtn" data-nav="browse"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h10"/></svg></span>Navegador<span class="kbd">B</span></button>
+      <button class="navbtn" data-nav="dash"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg></span>Painel<span class="kbd">D</span></button>
+      <button class="navbtn" data-nav="settings"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>Ajustes</button>
+      <button class="navbtn" data-nav="guide"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5h11a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg></span>Guia da skill</button>
+    </nav>
+
+    <div class="side-sep"></div>
+    <div class="side-head">
+      <span>Baralhos</span>
+      <button class="mini" id="newDeckBtn">+ novo</button>
+    </div>
+    <input type="text" class="deckfilter" id="deckFilter" placeholder="filtrar baralhos…">
+    <div class="decklist" id="deckList"></div>
+    <div class="side-sep"></div>
+    <div class="side-foot" id="sideFoot"></div>
+    <label class="sb-opt"><input type="checkbox" id="sbEdgeChk"> Abrir ao encostar na borda esquerda</label>
+    <div class="sb-hint"><kbd>Ctrl</kbd> + <kbd>B</kbd> abre/recolhe · <kbd>Esc</kbd> fecha</div>
+  </aside>
+
+  <main>
+    <!-- ============ HOME ============ -->
+    <section class="section active" id="sec-home">
+      <div class="hero">
+        <div>
+          <h2 id="homeTitle">Todos os baralhos</h2>
+          <div class="sub" id="homeSub"></div>
+        </div>
+        <div class="hero-actions">
+          <button class="btn ghost" id="customStudyBtn">Estudo personalizado</button>
+          <button class="btn" id="studyAllBtn">Embaralhar tudo</button>
+        </div>
+      </div>
+      <div class="grid" id="statGrid"></div>
+      <div id="deckArea" style="margin-top:24px;"></div>
+    </section>
+
+    <!-- ============ STUDY ============ -->
+    <section class="section" id="sec-study">
+      <div class="studybox" id="studyArea"></div>
+    </section>
+
+    <!-- ============ ADD / IMPORT ============ -->
+    <section class="section" id="sec-add">
+      <div class="hero"><div><h2>Criar e importar cards</h2><div class="sub">Cole o bloco gerado pela skill, ou crie um card manualmente.</div></div></div>
+
+      <div class="card">
+        <h3>Importar em lote</h3>
+        <div class="sub" style="margin-bottom:10px;">Reconhece automaticamente três formatos: blocos <code>BARALHO/Q/A/TAGS</code>, JSON exportado e TSV (frente ⇥ verso ⇥ tags). Veja o <a href="#" id="toGuide" style="color:var(--accent);">Guia da skill</a>.</div>
+        <label>Baralho padrão (usado quando o texto não declarar <code>BARALHO:</code>)</label>
+        <input type="text" id="importDefaultDeck" placeholder="ex: Administrativo 2026">
+        <label>Conteúdo</label>
+        <textarea id="importBox" rows="13" placeholder="BARALHO: Administrativo 2026
+---
+Q: Cabe responsabilização civil do Estado por omissão específica?
+A: Sim. Tratando-se de omissão específica, a responsabilidade é objetiva...
+FONTE: STF, RE 1.000.000, Info 1226
+TAGS: STF, Info-1226, responsabilidade-civil, 2026
+---
+TIPO: cloze
+BARALHO: Constitucional 2024
+CLOZE: O prazo do mandado de segurança é de {{c1::120 dias}}, contados da {{c2::ciência do ato}}.
+TAGS: STF, remédios-constitucionais"></textarea>
+        <div class="row" style="margin-top:12px;">
+          <button class="btn" id="doImportBtn">Importar</button>
+          <button class="btn ghost" id="previewImportBtn">Pré-visualizar</button>
+          <label style="margin:0;"><input type="checkbox" id="dedupChk" checked>Ignorar duplicados</label>
+          <span class="sub" id="importMsg"></span>
+        </div>
+        <div id="importPreview" style="margin-top:14px;"></div>
+      </div>
+
+      <div class="card">
+        <h3>Card avulso</h3>
+        <div class="row">
+          <div class="grow"><label>Baralho</label><select id="mDeck"></select></div>
+          <div class="grow"><label>Tipo</label>
+            <select id="mType">
+              <option value="basic">Básico (frente → verso)</option>
+              <option value="reverse">Básico + invertido (gera 2 cards)</option>
+              <option value="cloze">Cloze / lacunas</option>
+            </select>
+          </div>
+        </div>
+        <div id="mBasicFields">
+          <label>Frente (pergunta)</label><textarea id="mFront" rows="2"></textarea>
+          <label>Verso (resposta)</label><textarea id="mBack" rows="4"></textarea>
+        </div>
+        <div id="mClozeFields" style="display:none;">
+          <label>Texto com lacunas — use <code>{{c1::resposta}}</code>, <code>{{c2::resposta::dica}}</code></label>
+          <textarea id="mCloze" rows="4"></textarea>
+        </div>
+        <label>Fonte / referência (opcional)</label><input type="text" id="mSrc" placeholder="STJ, REsp 2.000.000, Info 812">
+        <label>Tags (vírgula)</label><input type="text" id="mTags" placeholder="STJ, Info-812, licitações">
+        <div style="margin-top:14px;"><button class="btn" id="mSaveBtn">Salvar card</button></div>
+      </div>
+    </section>
+
+    <!-- ============ BROWSE ============ -->
+    <section class="section" id="sec-browse">
+      <div class="hero"><div><h2>Navegador</h2><div class="sub">Busque, edite, mova, suspenda e reprograme em massa.</div></div>
+        <div class="hero-actions"><button class="btn ghost" id="studyFilteredBtn">Estudar o resultado</button></div>
+      </div>
+      <div class="browse-bar">
+        <input type="text" id="bSearch" placeholder="buscar texto, tag:STF, baralho:Penal, fonte:Info-1226…">
+        <select id="bDeck"></select>
+        <select id="bState">
+          <option value="all">Todos os estados</option>
+          <option value="new">Novos</option>
+          <option value="learning">Em aprendizado</option>
+          <option value="review">Em revisão</option>
+          <option value="due">Vencidos hoje</option>
+          <option value="suspended">Suspensos</option>
+          <option value="leech">Leeches</option>
+          <option value="flagged">Marcados</option>
+        </select>
+        <select id="bSort">
+          <option value="added">Mais recentes</option>
+          <option value="due">Vencimento</option>
+          <option value="lapses">Mais errados</option>
+          <option value="difficulty">Mais difíceis</option>
+          <option value="alpha">Alfabética</option>
+        </select>
+      </div>
+      <div id="bulkBar"></div>
+      <div class="card" style="padding:4px 0;"><div id="browseList"></div></div>
+      <div class="sub" id="browseCount" style="margin-top:10px;"></div>
+    </section>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="section" id="sec-dash">
+      <div class="hero"><div><h2>Painel</h2><div class="sub">Retenção real, carga futura e pontos cegos por matéria.</div></div>
+        <div class="hero-actions">
+          <select id="dashRange" style="width:auto;"><option value="30">30 dias</option><option value="90" selected>90 dias</option><option value="365">1 ano</option><option value="0">tudo</option></select>
+        </div>
+      </div>
+      <div class="grid" id="dashStats"></div>
+
+      <div class="card" style="margin-top:18px;">
+        <h3>Atividade — últimos 189 dias</h3>
+        <div class="heatmap" id="heatmap"></div>
+        <div class="legend">Cada quadrado é um dia. Quanto mais escuro, mais revisões.</div>
+      </div>
+
+      <div class="card">
+        <h3>Revisões por dia — últimas 3 semanas</h3>
+        <div class="chart" id="revChart"></div>
+        <div class="chartlabels" id="revChartLabels"></div>
+      </div>
+
+      <div class="card">
+        <h3>Previsão de carga — próximos 30 dias</h3>
+        <div class="chart" id="forecastChart"></div>
+        <div class="chartlabels" id="forecastLabels"></div>
+        <div class="legend" id="forecastLegend"></div>
+      </div>
+
+      <div class="card">
+        <h3>Pontos cegos — retenção por baralho</h3>
+        <div id="blindspots"></div>
+        <div class="legend">Retenção = % de revisões em que você acertou (nota ≥ Difícil). Abaixo de 80% pede reformulação do card ou releitura do julgado.</div>
+      </div>
+
+      <div class="card">
+        <h3>Maturidade do acervo</h3>
+        <div id="maturity"></div>
+      </div>
+
+      <div class="card">
+        <h3>Calibração — confiança × acerto</h3>
+        <div id="calib"></div>
+        <div class="legend">Mede excesso de confiança: quando você diz "tenho certeza" e erra, o card está mal formulado ou a memória é falsa.</div>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section class="section" id="sec-settings">
+      <div class="hero"><div><h2>Ajustes</h2><div class="sub">Agendamento, aparência e dados.</div></div></div>
+
+      <div class="card">
+        <h3>Agendamento</h3>
+        <div class="row">
+          <div class="grow"><label>Novos cards por dia (por baralho)</label><input type="number" id="stNew" min="0" max="999"></div>
+          <div class="grow"><label>Máximo de revisões por dia</label><input type="number" id="stMax" min="0" max="9999"></div>
+        </div>
+        <div class="row">
+          <div class="grow"><label>Retenção desejada (0,70–0,97)</label><input type="number" id="stRet" step="0.01" min="0.7" max="0.97"></div>
+          <div class="grow"><label>Intervalo máximo (dias)</label><input type="number" id="stMaxIvl" min="1" max="36500"></div>
+        </div>
+        <div class="row">
+          <div class="grow"><label>Passos de aprendizado (minutos, vírgula)</label><input type="text" id="stSteps" placeholder="1, 10"></div>
+          <div class="grow"><label>Passos de reaprendizado (minutos)</label><input type="text" id="stRelSteps" placeholder="10"></div>
+        </div>
+        <div class="row">
+          <div class="grow"><label>Limite de leech (erros)</label><input type="number" id="stLeech" min="2" max="20"></div>
+          <div class="grow"><label>Ação no leech</label><select id="stLeechAct"><option value="tag">Só marcar</option><option value="suspend">Marcar e suspender</option></select></div>
+        </div>
+        <div class="row" style="margin-top:14px;">
+          <label style="margin:0;"><input type="checkbox" id="stFuzz">Dispersar intervalos (fuzz) — evita picos de revisão</label>
+          <label style="margin:0;"><input type="checkbox" id="stConf">Pedir nível de confiança antes da resposta</label>
+          <label style="margin:0;"><input type="checkbox" id="stTimer">Mostrar cronômetro do card</label>
+          <label style="margin:0;"><input type="checkbox" id="stBuryRel">Adiar irmãos do mesmo julgado no dia</label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Aparência</h3>
+        <div class="row">
+          <div class="grow"><label>Tema</label><select id="stTheme"><option value="palha">Palha (claro)</option><option value="sepia">Sépia</option><option value="noite">Noite</option></select></div>
+          <div class="grow"><label>Tamanho do texto</label><select id="stFont"><option value="0.92">Compacto</option><option value="1">Padrão</option><option value="1.1">Grande</option><option value="1.22">Muito grande</option></select></div>
+        </div>
+      </div>
+
+      <div class="card" id="odCard">
+        <h3>Nuvem — OneDrive</h3>
+        <div class="sub" id="odStatus">Não conectado. Os cards ficam só neste navegador.</div>
+        <div class="row" id="odSetupRow" style="margin-top:10px;">
+          <div class="grow"><label>Client ID do app Microsoft (uma vez só)</label><input type="text" id="odClientId" placeholder="cole aqui o Application (client) ID"></div>
+        </div>
+        <div class="row" style="margin-top:6px;">
+          <button class="btn" id="odConnect">Conectar OneDrive</button>
+          <button class="btn ghost" id="odSyncNow" style="display:none;">Sincronizar agora</button>
+          <button class="btn ghost" id="odDisconnect" style="display:none;">Desconectar</button>
+        </div>
+        <div class="legend" style="margin-top:8px;">Guarda um <code>repertorio-backup.json</code> na pasta reservada do app dentro do seu próprio OneDrive (invisível nos seus arquivos normais). Ao entrar com a mesma conta no PC e no tablet, o app sincroniza automaticamente a cada revisão.</div>
+      </div>
+
+      <div class="card">
+        <h3>Dados</h3>
+        <div class="row">
+          <button class="btn ghost" id="exportJson">Exportar backup (.json)</button>
+          <button class="btn ghost" id="exportCsv">Exportar cards (.tsv p/ Anki)</button>
+          <button class="btn ghost" id="importJsonBtn">Importar backup</button>
+          <button class="btn danger" id="resetBtn">Apagar tudo</button>
+        </div>
+        <div class="sub" style="margin-top:10px;" id="storageInfo"></div>
+      </div>
+    </section>
+
+    <!-- ============ GUIDE ============ -->
+    <section class="section" id="sec-guide">
+      <div class="hero"><div><h2>Guia da skill</h2><div class="sub">Formato exato que a skill deve produzir para colar aqui sem atrito.</div></div></div>
+
+      <div class="card">
+        <h3>Formato de bloco (principal)</h3>
+        <div class="codebox">BARALHO: Administrativo 2026
+TIPO: basico              (opcional: basico | reverso | cloze — padrão basico)
+Q: pergunta direta, uma ideia por card
+A: resposta objetiva; se útil, fundamento resumido — sem a citação processual aqui
+FONTE: STF, RE 1.000.000, Rel. Min. X, Info 1226, j. 12/03/2026
+TAGS: STF, Info-1226, responsabilidade-civil, 2026
+TIPO: cloze
+CLOZE: O prazo decadencial do MS é de {{c1::120 dias}} da {{c2::ciência do ato}}.
+FONTE: Lei 12.016/2009, art. 23
+TAGS: Constitucional, remédios-constitucionais</div>
+        <div class="legend" style="margin-top:10px;">Regras: cada card termina na linha <code>TAGS:</code> — não precisa (e não deve) usar <code>---</code> entre cards: o chat renderiza <code>---</code> como uma linha visual (<code>&lt;hr&gt;</code>), e ao copiar o texto esse trecho pode não vir junto, quebrando a importação. <code>BARALHO:</code> vale para os cards seguintes até ser redeclarado. Cada <code>{{cN::…}}</code> distinto gera um card próprio. <code>{{c1::resposta::dica}}</code> mostra a dica na lacuna. O parser aceita <code>---</code> se aparecer (compatibilidade), mas a skill correta nunca deve gerá-lo.</div>
+      </div>
+
+      <div class="card">
+        <h3>Convenção de baralhos</h3>
+        <p style="font-size:.9rem; line-height:1.7; margin:0;">Use <b>Matéria + Ano</b>: <code>Administrativo 2026</code>, <code>Constitucional 2024</code>, <code>Penal 2025</code>. Assim você estuda um baralho isolado, embaralha tudo, ou escolhe um subconjunto no Estudo personalizado. Tags carregam o resto (tribunal, informativo, número do processo, tema) e são filtráveis no Navegador com <code>tag:STF</code>.</p>
+      </div>
+
+      <div class="card">
+        <h3>Regras de geração recomendadas</h3>
+        <p style="font-size:.9rem;line-height:1.75;margin:0;">
+        <b>Núcleo do julgado (sempre):</b> tese principal, distinções relevantes, pontos processuais reaproveitáveis.<br>
+        <b>Precedentes citados:</b> só se a tese for nova e não duplicar card existente.<br>
+        <b>Cards de atenção:</b> mudança de entendimento no tempo, distinções fáceis de confundir (overruling, distinguishing).<br>
+        <b>Quantidade:</b> 1 a 7 cards por julgado, conforme densidade.<br>
+        <b>Atomicidade:</b> uma proposição por card. Pergunta que aceita duas respostas deve virar dois cards.<br>
+        <b>Cloze:</b> reservado a prazos, quóruns, números e enumerações fechadas.<br>
+        <b>Verso:</b> resposta primeiro, fundamento depois; a citação processual vai no campo FONTE, não dentro da resposta.<br>
+        <b>Cuidado com SIM/NÃO:</b> um binário tem 50% de acerto no chute. Ao estudar, formule mentalmente a justificativa inteira antes de revelar — o SIM/NÃO sozinho não conta como ter sabido o card.</p>
+      </div>
+
+      <div class="card">
+        <h3>Formatos alternativos aceitos</h3>
+        <div class="codebox">TSV:   frente ⇥ verso ⇥ tag1,tag2
+JSON:  [{"deck":"Penal 2025","front":"...","back":"...","tags":["STJ"],"source":"..."}]</div>
+      </div>
+
+      <div class="card">
+        <h3>Atalhos de teclado</h3>
+        <div class="row" style="font-size:.85rem; line-height:2;">
+          <div class="grow"><kbd>espaço</kbd> revelar · <kbd>1-4</kbd> avaliar · <kbd>U</kbd> desfazer<br>
+          <kbd>E</kbd> editar · <kbd>Shift+S</kbd> suspender · <kbd>F</kbd> marcar · <kbd>Esc</kbd> sair</div>
+          <div class="grow"><kbd>H</kbd> início · <kbd>S</kbd> estudar · <kbd>A</kbd> adicionar<br><kbd>B</kbd> navegador · <kbd>D</kbd> painel</div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modalbg" id="modalBg"><div class="modal" id="modalBody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* =========================================================================
+   1. ESTADO E PERSISTÊNCIA
+   ========================================================================= */
+const KEY = 'repertorio_supremo_v2';
+
+const DEFAULT_SETTINGS = {
+  newPerDay: 20, maxReviews: 200, desiredRetention: 0.90, maxInterval: 36500,
+  learnSteps: [1, 10], relearnSteps: [10], leechThreshold: 8, leechAction: 'tag',
+  fuzz: true, askConfidence: true, showTimer: true, burySiblings: true,
+  theme: 'palha', fontScale: 1, sidebarPinned: false, sidebarEdge: false
+};
+
+let state = { version: 2, decks: [], cards: [], revlog: [], settings: {...DEFAULT_SETTINGS} };
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){
+      const p = JSON.parse(raw);
+      state.decks = p.decks || [];
+      state.cards = p.cards || [];
+      state.revlog = p.revlog || [];
+      state.settings = Object.assign({}, DEFAULT_SETTINGS, p.settings || {});
+    }
+  }catch(e){ console.error('load', e); }
+}
+let saveTimer=null;
+function flushSave(){
+  clearTimeout(saveTimer); saveTimer=null;
+  state.updatedAt = Date.now();
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }
+  catch(e){ toast('Falha ao salvar — armazenamento cheio ou bloqueado.'); }
+  odScheduleUpload();
+}
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flushSave, 120);
+}
+// Nunca perder a última ação: força o commit real ao esconder/fechar a aba,
+// em vez de confiar apenas no debounce (bug P0 corrigido).
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') flushSave(); });
+window.addEventListener('pagehide', flushSave);
+load();
+
+/* =========================================================================
+   1B. NUVEM — ONEDRIVE (login Microsoft + Microsoft Graph)
+   Guarda repertorio-backup.json na "Special App Folder" do OneDrive do
+   usuário (pasta invisível, exclusiva deste app). last-writer-wins por
+   timestamp; ao conectar, decide-se uma vez qual lado prevalece.
+   ========================================================================= */
+const OD_FILE = 'repertorio-backup.json';
+const OD_SCOPES = ['Files.ReadWrite.AppFolder'];
+const OD_LS_CLIENTID = 'repertorio_od_clientid';
+const OD_LS_CONNECTED = 'repertorio_od_connected';
+let odMsal = null, odAccount = null, odUploadTimer = null, odBusy = false;
+
+function odClientId(){ return localStorage.getItem(OD_LS_CLIENTID) || ''; }
+function odIsConnected(){ return localStorage.getItem(OD_LS_CONNECTED) === '1' && !!odClientId(); }
+function odSetStatus(msg){ const el = document.getElementById('odStatus'); if(el) el.textContent = msg; }
+function odRefreshButtons(){
+  const connected = odIsConnected();
+  document.getElementById('odConnect').textContent = connected ? 'Reconectar' : 'Conectar OneDrive';
+  document.getElementById('odSyncNow').style.display = connected ? '' : 'none';
+  document.getElementById('odDisconnect').style.display = connected ? '' : 'none';
+  document.getElementById('odClientId').value = odClientId();
+}
+
+async function odGetMsal(){
+  if(typeof msal === 'undefined'){ odSetStatus('A biblioteca de login da Microsoft não carregou (verifique a conexão) — tente recarregar a página.'); return null; }
+  const clientId = odClientId();
+  if(!clientId){ return null; }
+  if(odMsal && odMsal.__clientId === clientId) return odMsal;
+  odMsal = new msal.PublicClientApplication({
+    auth: {
+      clientId: clientId,
+      authority: 'https://login.microsoftonline.com/common',
+      redirectUri: window.location.origin + window.location.pathname
+    },
+    cache: { cacheLocation: 'localStorage' }
+  });
+  odMsal.__clientId = clientId;
+  await odMsal.initialize();
+  const accts = odMsal.getAllAccounts();
+  if(accts.length) odAccount = accts[0];
+  return odMsal;
+}
+
+async function odGetToken(interactive){
+  const app = await odGetMsal();
+  if(!app) return null;
+  const base = { scopes: OD_SCOPES, account: odAccount || undefined };
+  try{
+    const r = await app.acquireTokenSilent(base);
+    odAccount = r.account;
+    return r.accessToken;
+  }catch(e){
+    if(!interactive) return null;
+    const r = await app.loginPopup({ scopes: OD_SCOPES });
+    odAccount = r.account;
+    return r.accessToken;
+  }
+}
+
+async function odApi(path, opts){
+  const token = await odGetToken(false);
+  if(!token) throw new Error('sem token');
+  const res = await fetch('https://graph.microsoft.com/v1.0' + path, Object.assign({}, opts, {
+    headers: Object.assign({ Authorization: 'Bearer ' + token }, (opts&&opts.headers)||{})
+  }));
+  return res;
+}
+
+async function odPull(){
+  const res = await odApi(`/me/drive/special/approot:/${OD_FILE}:/content`, { method:'GET' });
+  if(res.status === 404) return null;
+  if(!res.ok) throw new Error('pull ' + res.status);
+  return await res.json();
+}
+
+async function odPush(){
+  const body = JSON.stringify(state);
+  const res = await odApi(`/me/drive/special/approot:/${OD_FILE}:/content`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body
+  });
+  if(!res.ok) throw new Error('push ' + res.status);
+}
+
+function odScheduleUpload(){
+  if(!odIsConnected()) return;
+  clearTimeout(odUploadTimer);
+  odUploadTimer = setTimeout(async ()=>{
+    try{ await odPush(); odSetStatus('Sincronizado com o OneDrive agora mesmo.'); }
+    catch(e){ odSetStatus('Não consegui sincronizar agora — tentarei de novo na próxima alteração.'); }
+  }, 1500);
+}
+
+async function odConnectFlow(){
+  const clientId = document.getElementById('odClientId').value.trim();
+  if(!clientId){ toast('Cole o Client ID do app Microsoft primeiro.'); return; }
+  localStorage.setItem(OD_LS_CLIENTID, clientId);
+  odSetStatus('Abrindo login da Microsoft…');
+  try{
+    const token = await odGetToken(true);
+    if(!token) throw new Error('sem token');
+    localStorage.setItem(OD_LS_CONNECTED, '1');
+    odSetStatus('Conectado. Verificando dados na nuvem…');
+    odRefreshButtons();
+    const remote = await odPull().catch(()=>null);
+    if(!remote){
+      await odPush();
+      odSetStatus('Nenhum backup encontrado na nuvem — enviei os dados deste aparelho.');
+      return;
+    }
+    const remoteTs = remote.updatedAt || 0;
+    const localTs = state.updatedAt || 0;
+    if(Math.abs(remoteTs - localTs) < 2000){
+      odSetStatus('Já sincronizado.');
+      return;
+    }
+    confirmModal(
+      remoteTs > localTs
+        ? 'Encontrei um backup mais recente no OneDrive (de outro aparelho). Usar os dados da nuvem aqui? (o que está só neste navegador será substituído)'
+        : 'Os dados deste aparelho são mais recentes que os da nuvem. Enviar para o OneDrive agora? (o que está na nuvem será substituído)',
+      async ()=>{
+        odBusy = true;
+        try{
+          if(remoteTs > localTs){
+            state = Object.assign({ version:2, decks:[], cards:[], revlog:[], settings:{...DEFAULT_SETTINGS} }, remote);
+            flushSave();
+            applyTheme(); renderDeckList(); renderHome(); refreshDeckSelects(); fillSettings();
+            odSetStatus('Dados da nuvem aplicados neste aparelho.');
+          } else {
+            await odPush();
+            odSetStatus('Dados deste aparelho enviados para o OneDrive.');
+          }
+        }catch(e){ odSetStatus('Falha ao resolver a sincronização — tente "Sincronizar agora".'); }
+        odBusy = false;
+      }
+    );
+  }catch(e){
+    odSetStatus('Não foi possível conectar. Confira o Client ID e se o endereço deste app foi cadastrado como redirecionamento no Azure.');
+  }
+}
+
+document.getElementById('odConnect').addEventListener('click', odConnectFlow);
+document.getElementById('odSyncNow').addEventListener('click', async ()=>{
+  odSetStatus('Sincronizando…');
+  try{
+    const remote = await odPull();
+    const remoteTs = (remote&&remote.updatedAt)||0;
+    if(remote && remoteTs > (state.updatedAt||0)){
+      state = Object.assign({ version:2, decks:[], cards:[], revlog:[], settings:{...DEFAULT_SETTINGS} }, remote);
+      flushSave();
+      applyTheme(); renderDeckList(); renderHome(); refreshDeckSelects(); fillSettings();
+      odSetStatus('Trouxe a versão mais recente da nuvem.');
+    } else {
+      await odPush();
+      odSetStatus('Enviado — este aparelho estava com a versão mais recente.');
+    }
+  }catch(e){ odSetStatus('Falha ao sincronizar. Tente reconectar.'); }
+});
+document.getElementById('odDisconnect').addEventListener('click', ()=>{
+  confirmModal('Desconectar o OneDrive? Os dados continuam salvos neste navegador e na nuvem — só para de sincronizar automaticamente.', ()=>{
+    localStorage.removeItem(OD_LS_CONNECTED);
+    odAccount = null;
+    odSetStatus('Desconectado. Os cards ficam só neste navegador até você reconectar.');
+    odRefreshButtons();
+  });
+});
+
+// Ao abrir o app já conectado, tenta puxar silenciosamente a versão mais nova.
+(async function odBootSync(){
+  if(!odIsConnected()) { odSetStatus('Não conectado. Os cards ficam só neste navegador.'); return; }
+  try{
+    const remote = await odPull();
+    if(remote && (remote.updatedAt||0) > (state.updatedAt||0)){
+      state = Object.assign({ version:2, decks:[], cards:[], revlog:[], settings:{...DEFAULT_SETTINGS} }, remote);
+      flushSave();
+      applyTheme(); renderDeckList(); renderHome(); refreshDeckSelects();
+      if(view==='settings') fillSettings();
+    }
+    odSetStatus('Conectado ao OneDrive — sincronizado.');
+  }catch(e){
+    odSetStatus('Conectado ao OneDrive (aguardando sincronizar).');
+  }
+})();
+
+/* =========================================================================
+   2. UTILITÁRIOS
+   ========================================================================= */
+const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
+const now = () => new Date();
+const iso = d => d.toISOString();
+function dayKey(d){
+  // Dia civil LOCAL, não UTC — evita que streak/novos-do-dia/heatmap mudem de dia
+  // errado perto da virada da meia-noite dependendo do fuso do usuário (bug P0 corrigido).
+  const x = new Date(d);
+  const y = x.getFullYear(), m = String(x.getMonth()+1).padStart(2,'0'), dd = String(x.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dd}`;
+}
+const today = () => dayKey(new Date());
+const MIN = 60000, DAY = 86400000;
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function addDaysISO(days){ return iso(new Date(Date.now() + days*DAY)); }
+function addMinISO(m){ return iso(new Date(Date.now() + m*MIN)); }
+function clamp(v,a,b){ return Math.min(b, Math.max(a,v)); }
+function fmtIvl(days){
+  if(days < 1/1440*2) return 'agora';
+  if(days < 1/24) return Math.round(days*1440)+' min';
+  if(days < 1) return Math.round(days*24)+' h';
+  if(days < 30) return Math.round(days)+' d';
+  if(days < 365) return (days/30).toFixed(days<90?1:0)+' m';
+  return (days/365).toFixed(1)+' a';
+}
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._tm); t._tm = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=(Math.random()*(i+1))|0; [a[i],a[j]]=[a[j],a[i]];} return a; }
+
+/* Markdown leve + cloze */
+function md(s){
+  let t = esc(s);
+  t = t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+       .replace(/(^|\W)\*([^*\n]+)\*(?=\W|$)/g,'$1<em>$2</em>')
+       .replace(/`([^`]+)`/g,'<code>$1</code>')
+       .replace(/\n/g,'<br>');
+  return t;
+}
+const CLOZE_RE = /\{\{c(\d+)::([\s\S]*?)(?:::([\s\S]*?))?\}\}/g;
+function clozeNums(text){
+  const s = new Set(); let m; const re = new RegExp(CLOZE_RE.source,'g');
+  while((m = re.exec(text))) s.add(parseInt(m[1],10));
+  return [...s].sort((a,b)=>a-b);
+}
+function clozeFront(text, n){
+  const re = new RegExp(CLOZE_RE.source,'g');
+  return md(text).replace(/\{\{c(\d+)::([\s\S]*?)(?:::([\s\S]*?))?\}\}/g, (f,num,ans,hint)=>
+    +num===n ? `<span class="cloze-gap">[${hint?esc(hint):'…'}]</span>`
+             : `<span class="cloze-dim">${ans}</span>`);
+}
+function clozeBack(text, n){
+  return md(text).replace(/\{\{c(\d+)::([\s\S]*?)(?:::([\s\S]*?))?\}\}/g, (f,num,ans)=>
+    +num===n ? `<span class="cloze-hit">${ans}</span>` : `<span class="cloze-dim">${ans}</span>`);
+}
+function plainText(c){
+  if(c.type==='cloze') return c.text.replace(/\{\{c\d+::([\s\S]*?)(?:::[\s\S]*?)?\}\}/g,'[$1]');
+  return c.front;
+}
+
+/* =========================================================================
+   3. FSRS-5 (implementação completa, pesos padrão)
+   ========================================================================= */
+const W = [0.40255,1.18385,3.173,15.69105,7.1949,0.5345,1.4604,0.0046,1.54575,0.1192,
+           1.01925,1.9395,0.11,0.29605,2.2698,0.2315,2.9898,0.51655,0.6621];
+const DECAY = -0.5, FACTOR = Math.pow(0.9, 1/DECAY) - 1; // 19/81
+
+function retrievability(elapsedDays, stability){
+  if(stability<=0) return 0;
+  return Math.pow(1 + FACTOR * elapsedDays / stability, DECAY);
+}
+function intervalFor(stability, retention){
+  return (stability / FACTOR) * (Math.pow(retention, 1/DECAY) - 1);
+}
+function initS(g){ return Math.max(0.1, W[g-1]); }
+function initD(g){ return clamp(W[4] - Math.exp(W[5]*(g-1)) + 1, 1, 10); }
+function nextD(d, g){
+  const dd = d - W[6]*(g-3);
+  const damped = d + (dd - d) * (10 - d) / 9;
+  const mean = W[7]*initD(4) + (1-W[7])*damped;
+  return clamp(mean, 1, 10);
+}
+function nextRecallS(d, s, r, g){
+  const hard = g===2 ? W[15] : 1;
+  const easy = g===4 ? W[16] : 1;
+  return s * (1 + Math.exp(W[8]) * (11-d) * Math.pow(s, -W[9]) *
+              (Math.exp(W[10]*(1-r)) - 1) * hard * easy);
+}
+function nextForgetS(d, s, r){
+  const longTerm = W[11] * Math.pow(d, -W[12]) * (Math.pow(s+1, W[13]) - 1) * Math.exp(W[14]*(1-r));
+  const shortTerm = s / Math.exp(W[17]*W[18]);
+  return Math.min(longTerm, shortTerm);
+}
+function applyFuzz(days){
+  if(!state.settings.fuzz || days < 2.5) return days;
+  let f;
+  if(days < 7) f = 0.15; else if(days < 20) f = 0.10; else f = 0.05;
+  const delta = days * f;
+  return days + (Math.random()*2-1)*delta;
+}
+
+function newFsrs(){
+  return { due: iso(now()), stability:0, difficulty:0, reps:0, lapses:0,
+           state:'new', lastReview:null, step:0, elapsed:0, scheduledDays:0 };
+}
+
+/**
+ * Calcula o resultado de uma avaliação sem gravar.
+ * grade: 1 Errei, 2 Difícil, 3 Bom, 4 Fácil
+ */
+function preview(card, grade){
+  const s = state.settings;
+  const f = card.fsrs;
+  const out = { stability:f.stability, difficulty:f.difficulty, reps:f.reps+1,
+                lapses:f.lapses, state:f.state, step:f.step, dueMs:0, ivlDays:0 };
+  const elapsed = f.lastReview ? Math.max(0,(Date.now() - new Date(f.lastReview))/DAY) : 0;
+
+  if(f.state === 'new'){
+    out.difficulty = initD(grade);
+    out.stability = initS(grade);
+    const steps = s.learnSteps.length ? s.learnSteps : [10];
+    if(grade === 1){ out.state='learning'; out.step=0; out.dueMs = steps[0]*MIN; }
+    else if(grade === 2){ out.state='learning'; out.step=0; out.dueMs = steps[0]*MIN*1.5; }
+    else if(grade === 3){
+      if(steps.length > 1){ out.state='learning'; out.step=1; out.dueMs = steps[1]*MIN; }
+      else { out.state='review'; out.ivlDays = graduate(out.stability); out.dueMs = out.ivlDays*DAY; }
+    } else { out.state='review'; out.ivlDays = graduate(out.stability); out.dueMs = out.ivlDays*DAY; }
+  }
+  else if(f.state === 'learning' || f.state === 'relearning'){
+    const steps = f.state==='learning' ? (s.learnSteps.length?s.learnSteps:[10])
+                                       : (s.relearnSteps.length?s.relearnSteps:[10]);
+    const r = retrievability(elapsed, f.stability||1);
+    out.difficulty = nextD(f.difficulty || initD(grade), grade);
+    out.stability = grade===1 ? nextForgetS(out.difficulty, f.stability||initS(1), r)
+                              : nextRecallS(out.difficulty, f.stability||initS(grade), r, grade);
+    out.stability = Math.max(0.1, out.stability);
+    if(grade === 1){ out.step = 0; out.dueMs = steps[0]*MIN; }
+    else if(grade === 2){ out.dueMs = steps[Math.min(f.step,steps.length-1)]*MIN; }
+    else if(grade === 3){
+      if(f.step + 1 < steps.length){ out.step = f.step+1; out.dueMs = steps[f.step+1]*MIN; }
+      else { out.state='review'; out.step=0; out.ivlDays = graduate(out.stability); out.dueMs = out.ivlDays*DAY; }
+    } else { out.state='review'; out.step=0; out.ivlDays = graduate(out.stability); out.dueMs = out.ivlDays*DAY; }
+  }
+  else { /* review */
+    const r = retrievability(elapsed, f.stability);
+    out.difficulty = nextD(f.difficulty, grade);
+    if(grade === 1){
+      out.lapses = f.lapses + 1;
+      out.stability = Math.max(0.1, nextForgetS(out.difficulty, f.stability, r));
+      const rs = s.relearnSteps.length ? s.relearnSteps : [];
+      if(rs.length){ out.state='relearning'; out.step=0; out.dueMs = rs[0]*MIN; }
+      else { out.state='review'; out.ivlDays = graduate(out.stability); out.dueMs = out.ivlDays*DAY; }
+    } else {
+      out.stability = Math.max(0.1, nextRecallS(out.difficulty, f.stability, r, grade));
+      out.state='review'; out.ivlDays = graduate(out.stability); out.dueMs = out.ivlDays*DAY;
+    }
+  }
+  return out;
+}
+function graduate(stability){
+  const s = state.settings;
+  let d = intervalFor(stability, s.desiredRetention);
+  d = applyFuzz(d);
+  return clamp(Math.round(Math.max(1, d)), 1, s.maxInterval);
+}
+
+function applyGrade(card, grade, extra){
+  const before = JSON.parse(JSON.stringify(card.fsrs));
+  const p = preview(card, grade);
+  const f = card.fsrs;
+  f.stability = p.stability; f.difficulty = p.difficulty; f.reps = p.reps;
+  f.lapses = p.lapses; f.state = p.state; f.step = p.step;
+  f.elapsed = f.lastReview ? (Date.now()-new Date(f.lastReview))/DAY : 0;
+  f.scheduledDays = p.ivlDays || p.dueMs/DAY;
+  f.lastReview = iso(now());
+  f.due = iso(new Date(Date.now() + Math.max(0, p.dueMs)));
+
+  const entry = { id: uid(), cardId: card.id, deckId: card.deckId, rating: grade,
+                  date: iso(now()), day: today(), ms: (extra&&extra.ms)||0,
+                  conf: (extra&&extra.conf)||null, prevState: before.state,
+                  ivl: f.scheduledDays, snapshot: before };
+  state.revlog.push(entry);
+  // Histórico nunca é apagado silenciosamente (bug P0 corrigido). Se o armazenamento
+  // encher, quem avisa é o catch de flushSave() — nunca um corte automático e mudo.
+
+  // leech
+  if(grade===1 && f.lapses >= state.settings.leechThreshold && f.lapses % Math.max(1,Math.floor(state.settings.leechThreshold/2)) === 0){
+    if(!card.tags.includes('leech')) card.tags.push('leech');
+    if(state.settings.leechAction === 'suspend'){ card.suspended = true; toast('Card virou leech e foi suspenso.'); }
+    else toast('Card marcado como leech — considere reformular.');
+  }
+  // adiar irmãos (mesmo julgado/nota)
+  if(state.settings.burySiblings && card.noteId){
+    state.cards.forEach(c=>{
+      if(c!==card && c.noteId===card.noteId && !c.suspended){
+        const end = new Date(); end.setHours(23,59,59,999);
+        if(new Date(c.fsrs.due) < end) c.buriedUntil = iso(end);
+      }
+    });
+  }
+  save();
+  return entry;
+}
+
+/* =========================================================================
+   4. CONSULTAS / FILAS
+   ========================================================================= */
+function deckById(id){ return state.decks.find(d=>d.id===id); }
+function deckByName(name){ return state.decks.find(d=>d.name.toLowerCase()===name.toLowerCase()); }
+function ensureDeck(name){
+  name = (name||'Sem baralho').trim();
+  let d = deckByName(name);
+  if(!d){ d = {id:uid(), name, createdAt:iso(now())}; state.decks.push(d); }
+  return d;
+}
+function cardsOf(deckId){ return deckId ? state.cards.filter(c=>c.deckId===deckId) : state.cards.slice(); }
+// Remove do revlog as revisões de cards que deixaram de existir, para nunca sobrar
+// histórico órfão (cardId apontando para nada) após uma exclusão (bug P0 corrigido).
+function purgeRevlogFor(cardIds){
+  const set = cardIds instanceof Set ? cardIds : new Set(cardIds);
+  if(!set.size) return;
+  state.revlog = state.revlog.filter(r=>!set.has(r.cardId));
+}
+function isBuried(c){ return c.buriedUntil && new Date(c.buriedUntil) > now(); }
+function isActive(c){ return !c.suspended && !isBuried(c); }
+function isDue(c){ return isActive(c) && new Date(c.fsrs.due) <= now(); }
+function isLeech(c){ return c.fsrs.lapses >= state.settings.leechThreshold || c.tags.includes('leech'); }
+
+function newIntroducedToday(deckId){
+  const t = today();
+  const ids = new Set();
+  state.revlog.forEach(r=>{ if(r.day===t && r.prevState==='new' && (!deckId || r.deckId===deckId)) ids.add(r.cardId); });
+  return ids.size;
+}
+function reviewsToday(){ const t=today(); return state.revlog.filter(r=>r.day===t).length; }
+
+function deckCounts(deckId){
+  const cs = cardsOf(deckId).filter(isActive);
+  const dueNow = cs.filter(isDue);
+  const nw = dueNow.filter(c=>c.fsrs.state==='new');
+  const lrn = dueNow.filter(c=>c.fsrs.state==='learning'||c.fsrs.state==='relearning');
+  const rev = dueNow.filter(c=>c.fsrs.state==='review');
+  const allowNew = Math.max(0, state.settings.newPerDay - newIntroducedToday(deckId));
+  return {
+    total: cardsOf(deckId).length,
+    newAvail: Math.min(nw.length, allowNew),
+    newTotal: cs.filter(c=>c.fsrs.state==='new').length,
+    learning: lrn.length,
+    review: rev.length,
+    due: Math.min(nw.length, allowNew) + lrn.length + rev.length,
+    lapsed: cardsOf(deckId).filter(isLeech).length,
+    suspended: cardsOf(deckId).filter(c=>c.suspended).length
+  };
+}
+
+/**
+ * Monta a fila de estudo.
+ * opts: {deckIds:[], tags:[], includeNew, includeReview, includeLapsed,
+ *         limit, order, ignoreLimits, onlyLeech, onlyFlagged, cardIds}
+ */
+function buildQueue(opts){
+  opts = opts || {};
+  let pool = state.cards.filter(isActive);
+  if(opts.cardIds) { const set=new Set(opts.cardIds); pool = pool.filter(c=>set.has(c.id)); }
+  if(opts.deckIds && opts.deckIds.length){ const s=new Set(opts.deckIds); pool = pool.filter(c=>s.has(c.deckId)); }
+  if(opts.tags && opts.tags.length){
+    const tl = opts.tags.map(t=>t.toLowerCase());
+    pool = pool.filter(c=>c.tags.some(t=>tl.includes(t.toLowerCase())));
+  }
+  if(opts.onlyLeech) pool = pool.filter(isLeech);
+  if(opts.onlyFlagged) pool = pool.filter(c=>c.flag);
+
+  if(!opts.ignoreLimits) pool = pool.filter(isDue);
+
+  let news = pool.filter(c=>c.fsrs.state==='new');
+  let lrn  = pool.filter(c=>c.fsrs.state==='learning'||c.fsrs.state==='relearning');
+  let rev  = pool.filter(c=>c.fsrs.state==='review');
+
+  if(opts.includeNew === false) news = [];
+  if(opts.includeReview === false) rev = [];
+  if(opts.includeLapsed === false) lrn = [];
+
+  if(!opts.ignoreLimits){
+    const byDeck = {};
+    news = news.filter(c=>{
+      byDeck[c.deckId] = byDeck[c.deckId] ?? Math.max(0, state.settings.newPerDay - newIntroducedToday(c.deckId));
+      if(byDeck[c.deckId] > 0){ byDeck[c.deckId]--; return true; }
+      return false;
+    });
+    const room = Math.max(0, state.settings.maxReviews - reviewsToday());
+    rev = rev.slice(0, room);
+  }
+
+  const order = opts.order || 'mix';
+  const sorter = {
+    due: (a,b)=> new Date(a.fsrs.due) - new Date(b.fsrs.due),
+    added: (a,b)=> (a.createdAt||'').localeCompare(b.createdAt||''),
+    difficulty: (a,b)=> (b.fsrs.difficulty||0)-(a.fsrs.difficulty||0),
+    lapses: (a,b)=> (b.fsrs.lapses||0)-(a.fsrs.lapses||0)
+  };
+  let out;
+  if(order==='random' || order==='mix'){ out = shuffle([...lrn, ...rev, ...news]); if(order==='mix'){ out = [...shuffle(lrn), ...shuffle(rev), ...shuffle(news)]; } }
+  else { out = [...lrn, ...rev, ...news].sort(sorter[order] || sorter.due); }
+
+  if(opts.limit && opts.limit>0) out = out.slice(0, opts.limit);
+  return out;
+}
+
+/* =========================================================================
+   5. NAVEGAÇÃO
+   ========================================================================= */
+let currentDeck = null;   // filtro na home
+let view = 'home';
+
+document.querySelectorAll('.navbtn[data-nav]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.nav)));
+document.getElementById('toGuide').addEventListener('click', e=>{ e.preventDefault(); go('guide'); });
+
+function go(sec){
+  view = sec;
+  document.body.dataset.view = sec;
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.navbtn').forEach(n=>n.classList.remove('active'));
+  const el = document.getElementById('sec-'+sec); if(el) el.classList.add('active');
+  const btn = document.querySelector(`.navbtn[data-nav="${sec}"]`); if(btn) btn.classList.add('active');
+  if(sec==='home') renderHome();
+  if(sec==='browse') renderBrowse();
+  if(sec==='dash') renderDash();
+  if(sec==='add') refreshDeckSelects();
+  if(sec==='settings') fillSettings();
+  if(sec==='study' && !session) renderStudy();
+  window.scrollTo(0,0);
+}
+
+/* =========================================================================
+   6. SIDEBAR
+   ========================================================================= */
+let deckFilterText = '';
+document.getElementById('deckFilter').addEventListener('input', e=>{ deckFilterText = e.target.value.toLowerCase(); renderDeckList(); });
+const pinBtn = document.getElementById('pinSidebarBtn');
+const sidebarEl = document.getElementById('sidebar');
+const sbToggle = document.getElementById('sbToggle');
+const sbScrim = document.getElementById('sbScrim');
+const sbEdge = document.getElementById('sbEdge');
+const sbEdgeChk = document.getElementById('sbEdgeChk');
+let sbOpen = false, sbMode = 'click', sbHoverT = null, sbLeaveT = null;
+const isMobile = ()=> window.matchMedia('(max-width:860px)').matches;
+const isPinned = ()=> !!state.settings.sidebarPinned && !isMobile();
+
+function renderSidebar(){
+  const pinned = isPinned(), open = pinned || sbOpen;
+  sidebarEl.classList.toggle('open', open);
+  sidebarEl.classList.toggle('pinned', pinned);
+  if(open) sidebarEl.removeAttribute('inert'); else sidebarEl.setAttribute('inert','');
+  document.body.classList.toggle('sb-open', open);
+  document.body.classList.toggle('sb-pinned', pinned);
+  sbToggle.setAttribute('aria-expanded', String(open));
+  sbScrim.classList.toggle('show', open && !pinned);
+  pinBtn.classList.toggle('on', !!state.settings.sidebarPinned);
+  pinBtn.setAttribute('aria-pressed', String(!!state.settings.sidebarPinned));
+  pinBtn.title = state.settings.sidebarPinned ? 'Soltar painel' : 'Fixar painel';
+  sbEdge.hidden = !state.settings.sidebarEdge || open || isMobile();
+  sbEdgeChk.checked = !!state.settings.sidebarEdge;
+}
+function openSidebar(mode){
+  clearTimeout(sbHoverT); clearTimeout(sbLeaveT);
+  sbOpen = true; sbMode = mode || 'click'; renderSidebar();
+  if(sbMode==='click') requestAnimationFrame(()=>{
+    const t = sidebarEl.querySelector('.navbtn.active') || sidebarEl.querySelector('.navbtn'); if(t) t.focus({preventScroll:true});
+  });
+}
+function closeSidebar(returnFocus){
+  clearTimeout(sbHoverT); clearTimeout(sbLeaveT);
+  sbOpen = false; renderSidebar();
+  if(returnFocus) sbToggle.focus({preventScroll:true});
+}
+function toggleSidebar(){
+  if(isPinned()){ state.settings.sidebarPinned = false; sbOpen = false; save(); renderSidebar(); sbToggle.focus({preventScroll:true}); }
+  else if(sbOpen) closeSidebar(true);
+  else openSidebar('click');
+}
+sbToggle.addEventListener('click', ()=>openSidebar('click'));
+document.getElementById('sbClose').addEventListener('click', ()=>{
+  if(state.settings.sidebarPinned){ state.settings.sidebarPinned = false; save(); }
+  closeSidebar(true);
+});
+sbScrim.addEventListener('click', ()=>closeSidebar(false));
+pinBtn.addEventListener('click', ()=>{
+  state.settings.sidebarPinned = !state.settings.sidebarPinned;
+  if(state.settings.sidebarPinned) sbOpen = false;
+  save(); renderSidebar();
+});
+sbEdgeChk.addEventListener('change', ()=>{ state.settings.sidebarEdge = sbEdgeChk.checked; save(); renderSidebar(); });
+
+/* abrir ao encostar na borda (opcional) */
+sbEdge.addEventListener('mouseenter', ()=>{ clearTimeout(sbHoverT); sbHoverT = setTimeout(()=>openSidebar('hover'), 180); });
+sbEdge.addEventListener('mouseleave', ()=>clearTimeout(sbHoverT));
+sidebarEl.addEventListener('mouseleave', ()=>{
+  if(sbMode==='hover' && sbOpen && !isPinned()){ clearTimeout(sbLeaveT); sbLeaveT = setTimeout(()=>closeSidebar(false), 380); }
+});
+sidebarEl.addEventListener('mouseenter', ()=>clearTimeout(sbLeaveT));
+
+/* recolhe sozinho após navegar (se não estiver fixado) */
+sidebarEl.addEventListener('click', e=>{
+  if(!isPinned() && e.target.closest('.navbtn[data-nav], .dname')) closeSidebar(false);
+});
+
+/* gesto: arrastar da borda esquerda abre; arrastar para a esquerda fecha */
+let tx0 = null, ty0 = null;
+document.addEventListener('touchstart', e=>{
+  const t = e.touches[0]; tx0 = t.clientX; ty0 = t.clientY;
+  if(!(tx0 < 22 || sbOpen)) tx0 = null;
+}, {passive:true});
+document.addEventListener('touchend', e=>{
+  if(tx0===null) return;
+  const t = e.changedTouches[0], dx = t.clientX - tx0, dy = Math.abs(t.clientY - ty0);
+  if(dy < 60){
+    if(!sbOpen && dx > 70) openSidebar('click');
+    else if(sbOpen && !isPinned() && dx < -70) closeSidebar(false);
+  }
+  tx0 = null;
+}, {passive:true});
+window.addEventListener('resize', renderSidebar);
+renderSidebar();
+
+document.getElementById('newDeckBtn').addEventListener('click', ()=>{
+  promptModal('Novo baralho','ex: Administrativo 2026','', name=>{
+    ensureDeck(name); save(); renderDeckList(); renderHome(); refreshDeckSelects(); toast('Baralho criado.');
+  });
+});
+
+function renderDeckList(){
+  const el = document.getElementById('deckList'); el.innerHTML='';
+  const names = state.decks.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+  const filtered = names.filter(d=>d.name.toLowerCase().includes(deckFilterText));
+  if(!filtered.length){ el.innerHTML = `<div class="sub" style="padding:8px 6px;">${state.decks.length? 'Nenhum baralho com esse nome.' : 'Nenhum baralho ainda.'}</div>`; }
+  filtered.forEach(d=>{
+    const c = deckCounts(d.id);
+    const row = document.createElement('div');
+    row.className = 'deckrow' + (currentDeck===d.id?' active':'');
+    row.innerHTML = `<span class="dname" title="${esc(d.name)}">${esc(d.name)}</span>
+      ${c.newAvail?`<span class="badge new">${c.newAvail}</span>`:''}
+      <span class="badge ${c.due?'due':'zero'}">${c.due}</span>`;
+    row.querySelector('.dname').addEventListener('click',()=>{ currentDeck=d.id; go('home'); });
+    el.appendChild(row);
+  });
+  const tot = state.cards.length;
+  const dueAll = deckCounts(null).due;
+  sbToggle.classList.toggle('has-due', dueAll>0);
+  sbToggle.title = 'Abrir painel (Ctrl+B)' + (dueAll ? ' · ' + dueAll + ' para hoje' : '');
+  document.getElementById('sideFoot').innerHTML =
+    `${tot} cards · ${dueAll} para hoje<br>${reviewsToday()} revisões feitas hoje`;
+}
+
+/* =========================================================================
+   7. HOME
+   ========================================================================= */
+function renderHome(){
+  renderDeckList();
+  const t = document.getElementById('homeTitle'), s = document.getElementById('homeSub');
+  const deck = currentDeck ? deckById(currentDeck) : null;
+  if(deck && !deck.name){ currentDeck=null; }
+  t.textContent = deck ? deck.name : 'Todos os baralhos';
+  s.textContent = deck ? 'Visão do baralho — gerencie ou estude isoladamente'
+                       : `${state.decks.length} baralho(s) · ${state.cards.length} card(s)`;
+
+  const c = deckCounts(deck?deck.id:null);
+  const stat = (n,l)=>`<div class="stat"><div class="num">${n}</div><div class="lbl">${l}</div></div>`;
+  document.getElementById('statGrid').innerHTML =
+    stat(c.due,'para revisar agora') + stat(c.newAvail,'novos liberados hoje') +
+    stat(c.total,'cards no total') + stat(c.lapsed,'leeches');
+
+  const area = document.getElementById('deckArea'); area.innerHTML='';
+
+  if(deck){
+    const bar = document.createElement('div'); bar.className='row'; bar.style.marginBottom='14px';
+    bar.innerHTML = `<button class="btn" id="hStudy">Estudar ${deck.name}</button>
+      <button class="btn ghost" id="hCram">Revisar tudo (sem alterar agenda)</button>
+      <button class="btn ghost small" id="hRename">Renomear</button>
+      <button class="btn ghost small" id="hBack">← todos os baralhos</button>
+      <button class="btn danger small" id="hDel">Excluir baralho</button>`;
+    area.appendChild(bar);
+    bar.querySelector('#hStudy').addEventListener('click',()=>startSession({deckIds:[deck.id]}, deck.name));
+    bar.querySelector('#hCram').addEventListener('click',()=>startSession({deckIds:[deck.id], ignoreLimits:true, cram:true, order:'random'}, deck.name+' (repasso)'));
+    bar.querySelector('#hBack').addEventListener('click',()=>{currentDeck=null;renderHome();});
+    bar.querySelector('#hRename').addEventListener('click',()=>promptModal('Renomear baralho','', deck.name, n=>{ deck.name=n; save(); renderHome(); refreshDeckSelects(); }));
+    bar.querySelector('#hDel').addEventListener('click',()=>confirmModal(`Excluir "${deck.name}" e seus ${cardsOf(deck.id).length} cards?`,()=>{
+      purgeRevlogFor(cardsOf(deck.id).map(x=>x.id));
+      state.cards = state.cards.filter(x=>x.deckId!==deck.id);
+      state.decks = state.decks.filter(x=>x.id!==deck.id);
+      currentDeck=null; save(); renderHome(); refreshDeckSelects(); toast('Baralho excluído.');
+    }));
+
+    const info = document.createElement('div'); info.className='card';
+    info.innerHTML = `<h3>Composição</h3>
+      <div class="tablerow"><span>Novos</span><span><b>${c.newTotal}</b></span></div>
+      <div class="tablerow"><span>Em aprendizado</span><span><b>${c.learning}</b></span></div>
+      <div class="tablerow"><span>Em revisão vencidos</span><span><b>${c.review}</b></span></div>
+      <div class="tablerow"><span>Suspensos</span><span><b>${c.suspended}</b></span></div>
+      <div class="tablerow"><span>Leeches</span><span class="${c.lapsed?'bad':''}"><b>${c.lapsed}</b></span></div>`;
+    area.appendChild(info);
+
+    const tagsWrap = document.createElement('div'); tagsWrap.className='card';
+    const tagCount = {};
+    cardsOf(deck.id).forEach(x=>x.tags.forEach(tg=>tagCount[tg]=(tagCount[tg]||0)+1));
+    const tgs = Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).slice(0,40);
+    tagsWrap.innerHTML = `<h3>Tags do baralho</h3>` +
+      (tgs.length ? tgs.map(([k,v])=>`<span class="tag">${esc(k)} · ${v}</span>`).join('') : '<div class="sub">Sem tags.</div>');
+    area.appendChild(tagsWrap);
+    return;
+  }
+
+  if(!state.decks.length){
+    area.innerHTML = `<div class="empty">Nenhum baralho ainda.<br><br><button class="btn" id="goImport">Importar meus primeiros cards</button></div>`;
+    document.getElementById('goImport').addEventListener('click',()=>go('add'));
+    return;
+  }
+
+  state.decks.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR')).forEach(d=>{
+    const cc = deckCounts(d.id);
+    const el = document.createElement('div'); el.className='deckcard';
+    el.innerHTML = `<div class="deckcard-top">
+        <h3>${esc(d.name)}</h3>
+        <div class="row">
+          <button class="btn small" data-a="study" ${cc.due?'':'disabled'}>Estudar</button>
+          <button class="btn ghost small" data-a="manage">Abrir</button>
+        </div>
+      </div>
+      <div class="counts">
+        <span class="c-new">novos <b>${cc.newAvail}</b>/${cc.newTotal}</span>
+        <span class="c-due">para hoje <b>${cc.due}</b></span>
+        <span>total <b>${cc.total}</b></span>
+        ${cc.lapsed?`<span class="c-lapse">leeches <b>${cc.lapsed}</b></span>`:''}
+      </div>`;
+    el.querySelector('h3').addEventListener('click',()=>{currentDeck=d.id;renderHome();});
+    el.querySelector('[data-a=manage]').addEventListener('click',()=>{currentDeck=d.id;renderHome();});
+    el.querySelector('[data-a=study]').addEventListener('click',()=>startSession({deckIds:[d.id]}, d.name));
+    area.appendChild(el);
+  });
+}
+
+document.getElementById('studyAllBtn').addEventListener('click',()=>startSession({order:'random'}, 'Todos os baralhos'));
+document.getElementById('customStudyBtn').addEventListener('click', openCustomStudy);
+
+/* ---- Estudo personalizado ---- */
+function openCustomStudy(){
+  const decks = state.decks.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+  const allTags = [...new Set(state.cards.flatMap(c=>c.tags))].sort();
+  const body = document.getElementById('modalBody');
+  body.innerHTML = `<h3>Estudo personalizado</h3>
+    <div class="sub">Escolha os baralhos que quer embaralhar juntos e refine por tag e estado.</div>
+    <label>Baralhos</label>
+    <div class="row" style="margin-bottom:6px;">
+      <button class="mini" id="csAll">selecionar todos</button>
+      <button class="mini" id="csNone">limpar</button>
+    </div>
+    <div class="checklist" id="csDecks">
+      ${decks.map(d=>`<label><input type="checkbox" value="${d.id}" ${currentDeck===d.id?'checked':''}>${esc(d.name)} <span class="sub" style="margin-left:6px;">(${deckCounts(d.id).due} p/ hoje)</span></label>`).join('') || '<div class="sub">Nenhum baralho.</div>'}
+    </div>
+    <label>Filtrar por tags (opcional, vírgula)</label>
+    <input type="text" id="csTags" list="csTagList" placeholder="STF, Info-1226, licitações">
+    <datalist id="csTagList">${allTags.map(t=>`<option value="${esc(t)}">`).join('')}</datalist>
+    <label>Incluir</label>
+    <div class="row">
+      <label style="margin:0;"><input type="checkbox" id="csNew" checked>Novos</label>
+      <label style="margin:0;"><input type="checkbox" id="csRev" checked>Em revisão</label>
+      <label style="margin:0;"><input type="checkbox" id="csLrn" checked>Em aprendizado</label>
+      <label style="margin:0;"><input type="checkbox" id="csLeech">Só leeches</label>
+      <label style="margin:0;"><input type="checkbox" id="csFlag">Só marcados</label>
+    </div>
+    <div class="row">
+      <div class="grow"><label>Limite de cards</label><input type="number" id="csLimit" value="0" min="0" placeholder="0 = sem limite"></div>
+      <div class="grow"><label>Ordem</label>
+        <select id="csOrder">
+          <option value="mix">Mista (aprendizado → revisão → novos)</option>
+          <option value="random">Totalmente aleatória</option>
+          <option value="due">Mais vencidos primeiro</option>
+          <option value="difficulty">Mais difíceis primeiro</option>
+          <option value="lapses">Mais errados primeiro</option>
+          <option value="added">Ordem de adição</option>
+        </select>
+      </div>
+    </div>
+    <label style="margin-top:14px;"><input type="checkbox" id="csIgnore">Modo repasso — ignora a agenda e não altera os intervalos</label>
+    <div class="modal-actions">
+      <button class="btn ghost" id="csCancel">Cancelar</button>
+      <button class="btn" id="csGo">Começar</button>
+    </div>`;
+  openModal();
+  const boxes = ()=>[...body.querySelectorAll('#csDecks input')];
+  body.querySelector('#csAll').addEventListener('click',()=>boxes().forEach(b=>b.checked=true));
+  body.querySelector('#csNone').addEventListener('click',()=>boxes().forEach(b=>b.checked=false));
+  body.querySelector('#csCancel').addEventListener('click',closeModal);
+  body.querySelector('#csGo').addEventListener('click',()=>{
+    const ids = boxes().filter(b=>b.checked).map(b=>b.value);
+    const tags = body.querySelector('#csTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+    const opts = {
+      deckIds: ids, tags,
+      includeNew: body.querySelector('#csNew').checked,
+      includeReview: body.querySelector('#csRev').checked,
+      includeLapsed: body.querySelector('#csLrn').checked,
+      onlyLeech: body.querySelector('#csLeech').checked,
+      onlyFlagged: body.querySelector('#csFlag').checked,
+      limit: parseInt(body.querySelector('#csLimit').value)||0,
+      order: body.querySelector('#csOrder').value,
+      ignoreLimits: body.querySelector('#csIgnore').checked,
+      cram: body.querySelector('#csIgnore').checked
+    };
+    closeModal();
+    const label = ids.length===1 ? deckById(ids[0]).name : (ids.length? ids.length+' baralhos' : 'Tudo');
+    startSession(opts, label + (opts.cram?' (repasso)':''));
+  });
+}
+
+/* =========================================================================
+   8. ESTUDO
+   ========================================================================= */
+let session = null;
+/* session = {queue, idx, label, opts, shown, conf, startedAt, cardStart, stats, lastEntry} */
+
+function startSession(opts, label){
+  const q = buildQueue(opts);
+  if(!q.length){ toast('Nada para estudar com esses critérios.'); go('home'); return; }
+  session = { queue:q, idx:0, label:label||'Sessão', opts:opts||{}, shown:false, conf:null,
+              startedAt:Date.now(), cardStart:Date.now(),
+              stats:{again:0,hard:0,good:0,easy:0, count:0, msTotal:0} };
+  go('study'); renderStudy();
+}
+
+function renderStudy(){
+  const area = document.getElementById('studyArea');
+  if(!session){
+    const c = deckCounts(null);
+    area.innerHTML = `<div class="empty">Nenhuma sessão em andamento.<br><br>
+      <div class="row" style="justify-content:center;">
+        <button class="btn" id="qsAll">Estudar tudo (${c.due})</button>
+        <button class="btn ghost" id="qsCustom">Estudo personalizado</button>
+      </div></div>`;
+    area.querySelector('#qsAll').addEventListener('click',()=>startSession({order:'random'},'Todos os baralhos'));
+    area.querySelector('#qsCustom').addEventListener('click',openCustomStudy);
+    return;
+  }
+  if(session.idx >= session.queue.length){ renderDone(); return; }
+
+  const card = session.queue[session.idx];
+  const deck = deckById(card.deckId);
+  const s = session;
+  s.cardStart = Date.now();
+
+  const rem = session.queue.slice(session.idx);
+  const nNew = rem.filter(c=>c.fsrs.state==='new').length;
+  const nLrn = rem.filter(c=>c.fsrs.state==='learning'||c.fsrs.state==='relearning').length;
+  const nRev = rem.filter(c=>c.fsrs.state==='review').length;
+  const pct = Math.round((session.idx/session.queue.length)*100);
+
+  const front = card.type==='cloze' ? clozeFront(card.text, card.clozeIndex) : md(card.front);
+
+  area.innerHTML = `
+    <div class="study-top">
+      <div class="study-counts">
+        <span class="sc-new">${nNew}</span> novos
+        <span class="sc-lrn">${nLrn}</span> aprend.
+        <span class="sc-rev">${nRev}</span> revisão
+      </div>
+      <div>${esc(session.label)} ${session.opts.cram?'· repasso':''} ${state.settings.showTimer?'· <span id="tmr">0s</span>':''}</div>
+    </div>
+    <div class="pbar"><i style="width:${pct}%"></i></div>
+    <div class="cardface ${card.flag?'flagged':''}">
+      <div>${card.tags.map(t=>`<span class="tag plain">${esc(t)}</span>`).join('')}
+        ${isLeech(card)?'<span class="leech-warn">⚠ leech</span>':''}</div>
+      <div class="q">${front}</div>
+      <div id="ansZone"></div>
+    </div>
+    <div id="confZone"></div>
+    <div id="rateZone"></div>
+    <div class="study-tools">
+      <button class="btn ghost small" data-t="edit">Editar (E)</button>
+      <button class="btn ghost small" data-t="flag">${card.flag?'Desmarcar':'Marcar'} (F)</button>
+      <button class="btn ghost small" data-t="bury">Adiar p/ amanhã</button>
+      <button class="btn ghost small" data-t="susp">Suspender (⇧S)</button>
+      <button class="btn ghost small" data-t="undo" ${state.revlog.length?'':'disabled'}>Desfazer (U)</button>
+      <button class="btn ghost small" data-t="quit">Encerrar (Esc)</button>
+    </div>
+    <div class="hint" id="studyHint"></div>`;
+
+  area.querySelectorAll('[data-t]').forEach(b=>b.addEventListener('click',()=>studyTool(b.dataset.t)));
+
+  if(state.settings.showTimer){
+    clearInterval(area._tmr);
+    area._tmr = setInterval(()=>{
+      const el=document.getElementById('tmr'); if(!el){clearInterval(area._tmr);return;}
+      el.textContent = Math.round((Date.now()-s.cardStart)/1000)+'s';
+    },1000);
+  }
+
+  session.shown = false; session.conf = null;
+  if(state.settings.askConfidence){
+    document.getElementById('confZone').innerHTML =
+      `<div class="hint" style="margin-top:14px;">Antes de ver: quanta confiança você tem na resposta?</div>
+       <div class="confrow" id="confRow">
+         <button class="pill-toggle" data-c="chute">Chutei</button>
+         <button class="pill-toggle" data-c="meio">Mais ou menos</button>
+         <button class="pill-toggle" data-c="certo">Tenho certeza</button>
+       </div>`;
+    document.querySelectorAll('#confRow .pill-toggle').forEach(b=>b.addEventListener('click',()=>{
+      session.conf = b.dataset.c;
+      document.querySelectorAll('#confRow .pill-toggle').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      reveal();
+    }));
+    document.getElementById('studyHint').innerHTML = `<kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> confiança · <kbd>espaço</kbd> pular direto para a resposta`;
+  } else {
+    document.getElementById('confZone').innerHTML = `<button class="reveal" id="revealBtn">Mostrar resposta</button>`;
+    document.getElementById('revealBtn').addEventListener('click',reveal);
+    document.getElementById('studyHint').innerHTML = `<kbd>espaço</kbd> revelar`;
+  }
+}
+
+function reveal(){
+  if(!session || session.shown) return;
+  session.shown = true;
+  const card = session.queue[session.idx];
+  const back = card.type==='cloze' ? clozeBack(card.text, card.clozeIndex) : md(card.back);
+  document.getElementById('ansZone').innerHTML =
+    `<div class="a">${back}</div>` + (card.source?`<div class="src">${md(card.source)}</div>`:'');
+  const cz = document.getElementById('confZone'); if(cz) cz.innerHTML='';
+
+  const p = {}; [1,2,3,4].forEach(g=>{ const r = preview(card,g); p[g] = fmtIvl(r.dueMs/DAY); });
+  document.getElementById('rateZone').innerHTML = `<div class="ratebar">
+      <button class="ratebtn again" data-r="1">Errei<small>${session.opts.cram?'—':p[1]}</small></button>
+      <button class="ratebtn hard"  data-r="2">Difícil<small>${session.opts.cram?'—':p[2]}</small></button>
+      <button class="ratebtn good"  data-r="3">Bom<small>${session.opts.cram?'—':p[3]}</small></button>
+      <button class="ratebtn easy"  data-r="4">Fácil<small>${session.opts.cram?'—':p[4]}</small></button>
+    </div>`;
+  document.querySelectorAll('.ratebtn').forEach(b=>b.addEventListener('click',()=>grade(parseInt(b.dataset.r))));
+  document.getElementById('studyHint').innerHTML = `<kbd>1</kbd> errei · <kbd>2</kbd> difícil · <kbd>3</kbd> bom · <kbd>4</kbd> fácil · <kbd>U</kbd> desfazer`;
+}
+
+function grade(g){
+  if(!session || !session.shown) return;
+  const card = session.queue[session.idx];
+  const ms = Date.now() - session.cardStart;
+  session.stats.count++; session.stats.msTotal += ms;
+  session.stats[['again','hard','good','easy'][g-1]]++;
+
+  if(session.opts.cram){
+    // repasso: não altera agenda; só registra e reinsere se errou
+    state.revlog.push({id:uid(), cardId:card.id, deckId:card.deckId, rating:g, date:iso(now()),
+                       day:today(), ms, conf:session.conf, prevState:'cram', ivl:0, cram:true});
+    save();
+    session.idx++;
+    if(g===1) session.queue.splice(Math.min(session.queue.length, session.idx+4), 0, card);
+  } else {
+    session.lastEntry = applyGrade(card, g, {ms, conf:session.conf});
+    session.idx++;
+    // reinserção na mesma sessão para cards que voltaram ao aprendizado com passo curto
+    const f = card.fsrs;
+    if((f.state==='learning'||f.state==='relearning') && new Date(f.due) - Date.now() < 20*MIN){
+      const pos = Math.min(session.queue.length, session.idx + (g===1?2:4));
+      session.queue.splice(pos, 0, card);
+    }
+  }
+  renderStudy();
+  renderDeckList();
+}
+
+function studyTool(t){
+  if(!session) return;
+  const card = session.queue[session.idx];
+  if(t==='edit'){ if(card) editCard(card.id, ()=>renderStudy()); }
+  else if(t==='flag'){ if(card){ card.flag = !card.flag; save(); renderStudy(); } }
+  else if(t==='bury'){
+    if(card){ const e=new Date(); e.setHours(23,59,59,999); card.buriedUntil=iso(e); save();
+      session.queue.splice(session.idx,1); toast('Card adiado para amanhã.'); renderStudy(); }
+  }
+  else if(t==='susp'){
+    if(card){ card.suspended = true; save(); session.queue.splice(session.idx,1); toast('Card suspenso.'); renderStudy(); }
+  }
+  else if(t==='undo') undoLast();
+  else if(t==='quit'){ session=null; go('home'); }
+}
+
+function undoLast(){
+  const last = [...state.revlog].reverse().find(r=>!r.undone);
+  if(!last){ toast('Nada para desfazer.'); return; }
+  const card = state.cards.find(c=>c.id===last.cardId);
+  if(card && last.snapshot) card.fsrs = JSON.parse(JSON.stringify(last.snapshot));
+  state.revlog = state.revlog.filter(r=>r.id!==last.id);
+  save();
+  if(session){
+    const pos = session.queue.findIndex(c=>c.id===last.cardId);
+    if(pos>=0 && pos < session.idx) session.idx = pos;
+    else if(card){ session.queue.splice(session.idx,0,card); }
+    session.shown=false;
+  }
+  toast('Última avaliação desfeita.');
+  renderStudy(); renderDeckList();
+}
+
+function renderDone(){
+  const s = session.stats;
+  const mins = Math.round((Date.now()-session.startedAt)/60000);
+  const avg = s.count ? (s.msTotal/s.count/1000).toFixed(1) : 0;
+  const acc = s.count ? Math.round(100*(s.count-s.again)/s.count) : 0;
+  document.getElementById('studyArea').innerHTML = `
+    <div class="donebox">
+      <h2>Sessão concluída</h2>
+      <div class="sub">${esc(session.label)}</div>
+      <div class="grid" style="margin-top:22px; text-align:left;">
+        <div class="stat"><div class="num">${s.count}</div><div class="lbl">cards revisados</div></div>
+        <div class="stat"><div class="num">${acc}%</div><div class="lbl">acerto na sessão</div></div>
+        <div class="stat"><div class="num">${avg}s</div><div class="lbl">tempo médio por card</div></div>
+        <div class="stat"><div class="num">${mins}min</div><div class="lbl">duração</div></div>
+      </div>
+      <div class="row" style="justify-content:center;margin-top:22px;">
+        <button class="btn" id="dnMore">Continuar estudando</button>
+        <button class="btn ghost" id="dnHome">Voltar ao início</button>
+      </div>
+    </div>`;
+  document.getElementById('dnHome').addEventListener('click',()=>{ session=null; go('home'); });
+  document.getElementById('dnMore').addEventListener('click',()=>{
+    const q = buildQueue(session.opts);
+    if(!q.length){ toast('Nada mais pendente aqui.'); session=null; go('home'); return; }
+    session.queue=q; session.idx=0; renderStudy();
+  });
+  session = Object.assign({}, session); // mantém para "continuar"
+  renderDeckList();
+}
+
+/* =========================================================================
+   9. IMPORTAÇÃO / PARSER
+   ========================================================================= */
+function parseContent(text, defaultDeck){
+  const trimmed = text.trim();
+  if(!trimmed) return [];
+  // JSON
+  if(trimmed[0]==='[' || trimmed[0]==='{'){
+    try{
+      let data = JSON.parse(trimmed);
+      if(!Array.isArray(data)) data = data.cards || [];
+      return data.map(o=>({
+        deck: o.deck || o.baralho || defaultDeck || 'Sem baralho',
+        type: (o.type||o.tipo||'basic').toLowerCase(),
+        front: o.front || o.q || '', back: o.back || o.a || '',
+        text: o.text || o.cloze || '', source: o.source || o.fonte || '',
+        tags: Array.isArray(o.tags)? o.tags : String(o.tags||'').split(',').map(t=>t.trim()).filter(Boolean)
+      })).filter(o=>o.front||o.text);
+    }catch(e){ /* cai para os outros parsers */ }
+  }
+  // TSV
+  if(trimmed.includes('\t') && !/^\s*(BARALHO|Q|A|CLOZE|TIPO)\s*:/im.test(trimmed)){
+    return trimmed.split(/\r?\n/).filter(l=>l.trim()).map(line=>{
+      const p = line.split('\t');
+      return { deck: defaultDeck||'Sem baralho', type:'basic', front:(p[0]||'').trim(),
+               back:(p[1]||'').trim(), source:'', tags:(p[2]||'').split(',').map(t=>t.trim()).filter(Boolean) };
+    }).filter(o=>o.front && o.back);
+  }
+  // Blocos — cada card termina em TAGS: (mesmo sem "---") ou explicitamente em "---"
+  const out = [];
+  let deck = defaultDeck || 'Sem baralho';
+  const lines = trimmed.replace(/\r\n/g,'\n').split('\n');
+  let cur = null, field = null, hasContent = false;
+
+  function startCard(){ cur = { deck, type:'basic', front:'', back:'', text:'', source:'', tags:[] }; field=null; hasContent=false; }
+  function flush(){ if(cur && hasContent && (cur.front || cur.text)) out.push(cur); cur=null; }
+  startCard();
+
+  lines.forEach(raw=>{
+    const line = raw.replace(/\s+$/,'');
+    const t = line.trim();
+    let m;
+    if(/^-{3,}\s*$/.test(t)){ flush(); startCard(); return; }
+    if((m = t.match(/^BARALHO\s*:\s*(.*)$/i))){
+      if(m[1].trim()){ flush(); deck = m[1].trim(); startCard(); }
+      return;
+    }
+    if((m = t.match(/^TIPO\s*:\s*(.*)$/i))){
+      const v = m[1].trim().toLowerCase();
+      cur.type = /clo/.test(v)?'cloze' : /(rev|inv)/.test(v)?'reverse' : 'basic';
+      field=null; return;
+    }
+    if((m = t.match(/^(?:Q|FRENTE|PERGUNTA)\s*:\s*(.*)$/i))){
+      // se o card anterior não foi fechado por TAGS/---, fecha aqui antes de começar outro
+      if(hasContent && (cur.front || cur.text)){ flush(); startCard(); }
+      field='front'; cur.front = m[1]; hasContent=true; return;
+    }
+    if((m = t.match(/^(?:A|VERSO|RESPOSTA)\s*:\s*(.*)$/i))){ field='back'; cur.back = m[1]; hasContent=true; return; }
+    if((m = t.match(/^(?:CLOZE|LACUNA)\s*:\s*(.*)$/i))){ field='text'; cur.text = m[1]; cur.type='cloze'; hasContent=true; return; }
+    if((m = t.match(/^(?:FONTE|SOURCE|REF|REFERÊNCIA|REFERENCIA)\s*:\s*(.*)$/i))){ field='source'; cur.source = m[1]; return; }
+    if((m = t.match(/^TAGS?\s*:\s*(.*)$/i))){
+      cur.tags = m[1].split(/[,;]/).map(x=>x.trim()).filter(Boolean);
+      flush(); startCard(); // TAGS sempre fecha o card, com ou sem "---" depois
+      return;
+    }
+    if(!t){ return; }
+    if(field==='front') cur.front += (cur.front?'\n':'')+t;
+    else if(field==='back') cur.back += (cur.back?'\n':'')+t;
+    else if(field==='text') cur.text += (cur.text?'\n':'')+t;
+    else if(field==='source') cur.source += ' '+t;
+  });
+  flush();
+  return out;
+}
+
+function dedupKey(c){
+  // Identidade de duplicata: baralho + tipo + índice de cloze (quando houver) + texto + verso.
+  // clozeIndex é obrigatório na chave — sem isso, c1/c2/c3 da mesma nota colidem e são
+  // erroneamente descartados como duplicados (bug P0 corrigido).
+  return (c.deckId+'|'+(c.type||'')+'|'+(c.clozeIndex!=null?c.clozeIndex:'')+'|'+plainText(c)+'|'+(c.back||'')).toLowerCase();
+}
+function makeCards(parsed, dedup){
+  const existing = new Set(state.cards.map(dedupKey));
+  let added=0, skipped=0, decksTouched=new Set();
+  parsed.forEach(p=>{
+    const deck = ensureDeck(p.deck);
+    decksTouched.add(deck.name);
+    const noteId = uid();
+    const base = { deckId:deck.id, noteId, tags:p.tags||[], source:p.source||'',
+                   suspended:false, buriedUntil:null, flag:false, createdAt:iso(now()) };
+    const mk = (extra)=>{
+      const c = Object.assign({id:uid(), fsrs:newFsrs()}, base, extra);
+      const key = dedupKey(c);
+      if(dedup && existing.has(key)){ skipped++; return; }
+      existing.add(key); state.cards.push(c); added++;
+    };
+    if(p.type==='cloze' || (p.text && clozeNums(p.text).length)){
+      const nums = clozeNums(p.text || p.front);
+      const txt = p.text || p.front;
+      if(!nums.length){ mk({type:'basic', front:txt, back:p.back||''}); }
+      else nums.forEach(n=> mk({type:'cloze', text:txt, clozeIndex:n, front:'', back:''}));
+    } else if(p.type==='reverse'){
+      mk({type:'basic', front:p.front, back:p.back});
+      mk({type:'basic', front:p.back, back:p.front});
+    } else {
+      mk({type:'basic', front:p.front, back:p.back});
+    }
+  });
+  save();
+  return {added, skipped, decks:[...decksTouched]};
+}
+
+document.getElementById('previewImportBtn').addEventListener('click',()=>{
+  const parsed = parseContent(document.getElementById('importBox').value, document.getElementById('importDefaultDeck').value);
+  const el = document.getElementById('importPreview');
+  if(!parsed.length){ el.innerHTML = `<div class="sub">Nada reconhecido. Confira o Guia da skill.</div>`; return; }
+  const byDeck = {};
+  parsed.forEach(p=>byDeck[p.deck]=(byDeck[p.deck]||0)+1);
+  el.innerHTML = `<div class="sub" style="margin-bottom:8px;"><b>${parsed.length}</b> nota(s) reconhecida(s): `+
+    Object.entries(byDeck).map(([d,n])=>`${esc(d)} (${n})`).join(' · ')+`</div>` +
+    parsed.slice(0,6).map(p=>`<div class="crow"><div class="cmain">
+      <div class="cq">${esc((p.type==='cloze'? p.text : p.front)).slice(0,120)}</div>
+      <div class="cmeta"><span>${esc(p.deck)}</span><span>${p.type}</span>${p.source?`<span>${esc(p.source)}</span>`:''}${p.tags.length?`<span>${esc(p.tags.join(', '))}</span>`:''}</div>
+    </div></div>`).join('') + (parsed.length>6?`<div class="sub" style="margin-top:8px;">… e mais ${parsed.length-6}.</div>`:'');
+});
+
+document.getElementById('doImportBtn').addEventListener('click',()=>{
+  const txt = document.getElementById('importBox').value;
+  const dd = document.getElementById('importDefaultDeck').value;
+  const parsed = parseContent(txt, dd);
+  if(!parsed.length){ document.getElementById('importMsg').textContent = 'Nada reconhecido — confira o formato no Guia da skill.'; return; }
+  const r = makeCards(parsed, document.getElementById('dedupChk').checked);
+  document.getElementById('importMsg').textContent =
+    `${r.added} card(s) criados em ${r.decks.join(', ')}${r.skipped?` · ${r.skipped} duplicado(s) ignorado(s)`:''}.`;
+  document.getElementById('importBox').value=''; document.getElementById('importPreview').innerHTML='';
+  renderDeckList(); refreshDeckSelects(); toast(`${r.added} card(s) importados.`);
+});
+
+/* ---- card avulso ---- */
+document.getElementById('mType').addEventListener('change', e=>{
+  const cloze = e.target.value==='cloze';
+  document.getElementById('mBasicFields').style.display = cloze?'none':'block';
+  document.getElementById('mClozeFields').style.display = cloze?'block':'none';
+});
+document.getElementById('mSaveBtn').addEventListener('click',()=>{
+  const deckId = document.getElementById('mDeck').value;
+  const deck = deckById(deckId);
+  if(!deck){ toast('Crie um baralho primeiro.'); return; }
+  const type = document.getElementById('mType').value;
+  const tags = document.getElementById('mTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const source = document.getElementById('mSrc').value.trim();
+  let p;
+  if(type==='cloze'){
+    const text = document.getElementById('mCloze').value.trim();
+    if(!clozeNums(text).length){ toast('Use {{c1::...}} no texto.'); return; }
+    p = {deck:deck.name, type:'cloze', text, tags, source};
+  } else {
+    const front = document.getElementById('mFront').value.trim();
+    const back = document.getElementById('mBack').value.trim();
+    if(!front || !back){ toast('Preencha frente e verso.'); return; }
+    p = {deck:deck.name, type, front, back, tags, source};
+  }
+  const r = makeCards([p], false);
+  ['mFront','mBack','mCloze','mTags','mSrc'].forEach(id=>document.getElementById(id).value='');
+  toast(`${r.added} card(s) criados.`); renderDeckList();
+});
+function refreshDeckSelects(){
+  const decks = state.decks.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+  const md_ = document.getElementById('mDeck');
+  const prev = md_.value;
+  md_.innerHTML = decks.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('');
+  if(prev) md_.value = prev;
+  const bd = document.getElementById('bDeck');
+  const prevB = bd.value;
+  bd.innerHTML = `<option value="all">Todos os baralhos</option>` + decks.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('');
+  if(prevB) bd.value = prevB;
+}
+
+/* =========================================================================
+   10. NAVEGADOR
+   ========================================================================= */
+let selection = new Set();
+['bSearch','bDeck','bState','bSort'].forEach(id=>
+  document.getElementById(id).addEventListener('input', ()=>{ selection.clear(); renderBrowse(); }));
+
+function browseResults(){
+  const q = document.getElementById('bSearch').value.trim().toLowerCase();
+  const deckSel = document.getElementById('bDeck').value;
+  const st = document.getElementById('bState').value;
+  const sort = document.getElementById('bSort').value;
+
+  // sintaxe tag: / baralho: / fonte:
+  const terms = q.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
+  const plain = [], tagT = [], deckT = [], srcT = [];
+  terms.forEach(t=>{
+    t = t.replace(/"/g,'');
+    if(t.startsWith('tag:')) tagT.push(t.slice(4));
+    else if(t.startsWith('baralho:')||t.startsWith('deck:')) deckT.push(t.split(':')[1]);
+    else if(t.startsWith('fonte:')||t.startsWith('src:')) srcT.push(t.split(':')[1]);
+    else plain.push(t);
+  });
+
+  let list = state.cards.filter(c=>{
+    if(deckSel!=='all' && c.deckId!==deckSel) return false;
+    if(st==='new' && c.fsrs.state!=='new') return false;
+    if(st==='learning' && !/learn/.test(c.fsrs.state)) return false;
+    if(st==='review' && c.fsrs.state!=='review') return false;
+    if(st==='due' && !isDue(c)) return false;
+    if(st==='suspended' && !c.suspended) return false;
+    if(st==='leech' && !isLeech(c)) return false;
+    if(st==='flagged' && !c.flag) return false;
+    const hay = (plainText(c)+' '+(c.back||'')+' '+(c.source||'')).toLowerCase();
+    if(plain.length && !plain.every(p=>hay.includes(p))) return false;
+    if(tagT.length && !tagT.every(t=>c.tags.some(x=>x.toLowerCase().includes(t)))) return false;
+    if(deckT.length){ const dn=(deckById(c.deckId)||{}).name||''; if(!deckT.every(t=>dn.toLowerCase().includes(t))) return false; }
+    if(srcT.length && !srcT.every(t=>(c.source||'').toLowerCase().includes(t))) return false;
+    return true;
+  });
+
+  const sorters = {
+    added:(a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''),
+    due:(a,b)=>new Date(a.fsrs.due)-new Date(b.fsrs.due),
+    lapses:(a,b)=>b.fsrs.lapses-a.fsrs.lapses,
+    difficulty:(a,b)=>(b.fsrs.difficulty||0)-(a.fsrs.difficulty||0),
+    alpha:(a,b)=>plainText(a).localeCompare(plainText(b),'pt-BR')
+  };
+  return list.sort(sorters[sort]||sorters.added);
+}
+
+function renderBrowse(){
+  refreshDeckSelects();
+  const list = browseResults();
+  const el = document.getElementById('browseList');
+  document.getElementById('browseCount').textContent = `${list.length} card(s) no resultado · ${selection.size} selecionado(s)`;
+  renderBulkBar(list);
+
+  if(!list.length){ el.innerHTML = `<div class="empty">Nenhum card encontrado.</div>`; return; }
+  el.innerHTML='';
+  list.slice(0,500).forEach(c=>{
+    const deck = deckById(c.deckId);
+    const st = {new:'novo', learning:'aprendizado', relearning:'reaprend.', review:'revisão'}[c.fsrs.state];
+    const dueTxt = c.fsrs.state==='new' ? '—' : new Date(c.fsrs.due).toLocaleDateString('pt-BR');
+    const row = document.createElement('div');
+    row.className = 'crow' + (c.suspended?' susp':'');
+    row.innerHTML = `
+      <input type="checkbox" ${selection.has(c.id)?'checked':''} aria-label="selecionar">
+      <div class="cmain">
+        <div class="cq">${c.flag?'⚑ ':''}${esc(plainText(c)).slice(0,160)}</div>
+        <div class="cmeta">
+          <span>${esc(deck?deck.name:'—')}</span>
+          <span>${st}${c.type==='cloze'?' · cloze c'+c.clozeIndex:''}</span>
+          <span>vence ${dueTxt}</span>
+          <span>erros ${c.fsrs.lapses}</span>
+          ${c.fsrs.difficulty?`<span>dif. ${c.fsrs.difficulty.toFixed(1)}</span>`:''}
+          ${isLeech(c)?'<span class="leech-warn">leech</span>':''}
+          ${c.suspended?'<span>suspenso</span>':''}
+          ${c.tags.length?`<span>${esc(c.tags.slice(0,4).join(', '))}</span>`:''}
+        </div>
+      </div>
+      <div class="cact">
+        <button class="btn ghost small" data-a="edit">Editar</button>
+        <button class="btn ghost small" data-a="susp">${c.suspended?'Reativar':'Suspender'}</button>
+        <button class="btn ghost small" data-a="del">Excluir</button>
+      </div>`;
+    row.querySelector('input').addEventListener('change', e=>{
+      if(e.target.checked) selection.add(c.id); else selection.delete(c.id);
+      document.getElementById('browseCount').textContent = `${list.length} card(s) no resultado · ${selection.size} selecionado(s)`;
+      renderBulkBar(list);
+    });
+    row.querySelector('[data-a=edit]').addEventListener('click',()=>editCard(c.id, renderBrowse));
+    row.querySelector('[data-a=susp]').addEventListener('click',()=>{ c.suspended=!c.suspended; save(); renderBrowse(); renderDeckList(); });
+    row.querySelector('[data-a=del]').addEventListener('click',()=>confirmModal('Excluir este card?',()=>{
+      purgeRevlogFor([c.id]);
+      state.cards = state.cards.filter(x=>x.id!==c.id); save(); renderBrowse(); renderDeckList();
+    }));
+    el.appendChild(row);
+  });
+  if(list.length>500) el.insertAdjacentHTML('beforeend', `<div class="sub" style="padding:12px;">Mostrando os 500 primeiros. Refine a busca.</div>`);
+}
+
+function renderBulkBar(list){
+  const bb = document.getElementById('bulkBar');
+  if(!selection.size){
+    bb.innerHTML = `<div class="row" style="margin-bottom:10px;">
+      <button class="btn ghost small" id="selAll">Selecionar todos do resultado</button></div>`;
+    document.getElementById('selAll').addEventListener('click',()=>{ list.forEach(c=>selection.add(c.id)); renderBrowse(); });
+    return;
+  }
+  bb.innerHTML = `<div class="bulkbar">
+    <span>${selection.size} selecionado(s)</span>
+    <button class="btn ghost small" data-b="move">Mover para baralho…</button>
+    <button class="btn ghost small" data-b="tag">Adicionar tag…</button>
+    <button class="btn ghost small" data-b="untag">Remover tag…</button>
+    <button class="btn ghost small" data-b="susp">Suspender</button>
+    <button class="btn ghost small" data-b="unsusp">Reativar</button>
+    <button class="btn ghost small" data-b="flag">Marcar/desmarcar</button>
+    <button class="btn ghost small" data-b="reset">Zerar progresso</button>
+    <button class="btn ghost small" data-b="due">Reprogramar para…</button>
+    <button class="btn ghost small" data-b="study">Estudar seleção</button>
+    <button class="btn danger small" data-b="del">Excluir</button>
+    <button class="btn ghost small" data-b="clear">Limpar seleção</button>
+  </div>`;
+  const sel = ()=>state.cards.filter(c=>selection.has(c.id));
+  bb.querySelectorAll('[data-b]').forEach(b=>b.addEventListener('click',()=>{
+    const a = b.dataset.b;
+    if(a==='clear'){ selection.clear(); renderBrowse(); }
+    else if(a==='susp'){ sel().forEach(c=>c.suspended=true); save(); renderBrowse(); renderDeckList(); }
+    else if(a==='unsusp'){ sel().forEach(c=>{c.suspended=false;c.buriedUntil=null;}); save(); renderBrowse(); renderDeckList(); }
+    else if(a==='flag'){ sel().forEach(c=>c.flag=!c.flag); save(); renderBrowse(); }
+    else if(a==='reset'){ confirmModal(`Zerar o progresso de ${selection.size} card(s)?`,()=>{ sel().forEach(c=>c.fsrs=newFsrs()); save(); renderBrowse(); renderDeckList(); toast('Progresso zerado.'); }); }
+    else if(a==='del'){ confirmModal(`Excluir ${selection.size} card(s)?`,()=>{ purgeRevlogFor(selection); state.cards = state.cards.filter(c=>!selection.has(c.id)); selection.clear(); save(); renderBrowse(); renderDeckList(); }); }
+    else if(a==='study'){ const ids=[...selection]; startSession({cardIds:ids, ignoreLimits:true, order:'random'}, 'Seleção'); }
+    else if(a==='tag'){ promptModal('Adicionar tag','ex: revisar-antes-da-prova','', v=>{ sel().forEach(c=>{ if(!c.tags.includes(v)) c.tags.push(v); }); save(); renderBrowse(); }); }
+    else if(a==='untag'){ promptModal('Remover tag','ex: leech','', v=>{ sel().forEach(c=>{ c.tags = c.tags.filter(t=>t.toLowerCase()!==v.toLowerCase()); }); save(); renderBrowse(); }); }
+    else if(a==='move'){
+      const decks = state.decks.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+      const body=document.getElementById('modalBody');
+      body.innerHTML = `<h3>Mover ${selection.size} card(s)</h3>
+        <label>Baralho de destino</label>
+        <select id="mvDeck">${decks.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('')}</select>
+        <label>ou crie um novo</label><input type="text" id="mvNew" placeholder="ex: Administrativo 2026">
+        <div class="modal-actions"><button class="btn ghost" id="mvC">Cancelar</button><button class="btn" id="mvOk">Mover</button></div>`;
+      openModal();
+      body.querySelector('#mvC').addEventListener('click',closeModal);
+      body.querySelector('#mvOk').addEventListener('click',()=>{
+        const nn = body.querySelector('#mvNew').value.trim();
+        const target = nn ? ensureDeck(nn).id : body.querySelector('#mvDeck').value;
+        sel().forEach(c=>c.deckId=target); save(); closeModal(); renderBrowse(); renderDeckList(); refreshDeckSelects(); toast('Cards movidos.');
+      });
+    }
+    else if(a==='due'){
+      promptModal('Reprogramar','dias a partir de hoje (0 = hoje)','1', v=>{
+        const d = parseInt(v); if(isNaN(d)) return;
+        // Reprogramar só move a data de aparição (fila). Nunca inventa estabilidade,
+        // dificuldade nem transforma "novo" em "revisado" — isso seria afirmar que uma
+        // memória foi formada sem ter havido revisão real (bug P0 corrigido).
+        sel().forEach(c=>{ c.fsrs.due = addDaysISO(d); });
+        save(); renderBrowse(); renderDeckList(); toast('Reprogramado — estado de memória preservado.');
+      });
+    }
+  }));
+}
+
+document.getElementById('studyFilteredBtn').addEventListener('click',()=>{
+  const ids = browseResults().filter(isActive).map(c=>c.id);
+  if(!ids.length){ toast('Resultado vazio.'); return; }
+  startSession({cardIds:ids, ignoreLimits:true, order:'random'}, 'Resultado da busca');
+});
+
+/* ---- editar card ---- */
+function editCard(id, after){
+  const c = state.cards.find(x=>x.id===id); if(!c) return;
+  const decks = state.decks.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+  const body = document.getElementById('modalBody');
+  body.innerHTML = `<h3>Editar card</h3>
+    <label>Baralho</label>
+    <select id="edDeck">${decks.map(d=>`<option value="${d.id}" ${d.id===c.deckId?'selected':''}>${esc(d.name)}</option>`).join('')}</select>
+    ${c.type==='cloze'
+      ? `<label>Texto com lacunas</label><textarea id="edText" rows="4">${esc(c.text)}</textarea>
+         <div class="sub">Este card mostra a lacuna c${c.clozeIndex}. Alterar as lacunas não cria novos cards automaticamente.</div>`
+      : `<label>Frente</label><textarea id="edF" rows="3">${esc(c.front)}</textarea>
+         <label>Verso</label><textarea id="edB" rows="5">${esc(c.back)}</textarea>`}
+    <label>Fonte</label><input type="text" id="edS" value="${esc(c.source||'')}">
+    <label>Tags (vírgula)</label><input type="text" id="edT" value="${esc(c.tags.join(', '))}">
+    <div class="row" style="margin-top:12px;">
+      <label style="margin:0;"><input type="checkbox" id="edSusp" ${c.suspended?'checked':''}>Suspenso</label>
+      <label style="margin:0;"><input type="checkbox" id="edFlag" ${c.flag?'checked':''}>Marcado</label>
+    </div>
+    <div class="sub" style="margin-top:12px;">
+      Estado: ${c.fsrs.state} · reps ${c.fsrs.reps} · erros ${c.fsrs.lapses} ·
+      estabilidade ${(c.fsrs.stability||0).toFixed(1)}d · dificuldade ${(c.fsrs.difficulty||0).toFixed(1)}/10
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" id="edReset">Zerar progresso</button>
+      <button class="btn ghost" id="edCancel">Cancelar</button>
+      <button class="btn" id="edSave">Salvar</button>
+    </div>`;
+  openModal();
+  body.querySelector('#edCancel').addEventListener('click',closeModal);
+  body.querySelector('#edReset').addEventListener('click',()=>{ c.fsrs = newFsrs(); save(); closeModal(); after&&after(); toast('Progresso zerado.'); });
+  body.querySelector('#edSave').addEventListener('click',()=>{
+    c.deckId = body.querySelector('#edDeck').value;
+    if(c.type==='cloze') c.text = body.querySelector('#edText').value;
+    else { c.front = body.querySelector('#edF').value.trim(); c.back = body.querySelector('#edB').value.trim(); }
+    c.source = body.querySelector('#edS').value.trim();
+    c.tags = body.querySelector('#edT').value.split(',').map(t=>t.trim()).filter(Boolean);
+    c.suspended = body.querySelector('#edSusp').checked;
+    c.flag = body.querySelector('#edFlag').checked;
+    save(); closeModal(); after&&after(); renderDeckList(); toast('Card salvo.');
+  });
+}
+
+/* =========================================================================
+   11. PAINEL
+   ========================================================================= */
+document.getElementById('dashRange').addEventListener('change', renderDash);
+
+function renderDash(){
+  const range = parseInt(document.getElementById('dashRange').value);
+  const cut = range ? Date.now() - range*DAY : 0;
+  const logs = state.revlog.filter(r=>!cut || new Date(r.date).getTime() >= cut);
+  const real = logs.filter(r=>!r.cram);
+
+  const total = state.cards.length;
+  const reviewed = real.length;
+  const correct = real.filter(r=>r.rating>=2).length;
+  const retention = reviewed ? Math.round(100*correct/reviewed) : 0;
+  const matureLogs = real.filter(r=>r.snapshot && r.snapshot.stability >= 21);
+  const matureRet = matureLogs.length ? Math.round(100*matureLogs.filter(r=>r.rating>=2).length/matureLogs.length) : 0;
+
+  let streak=0; const dset = new Set(state.revlog.map(r=>r.day));
+  let d = new Date();
+  if(!dset.has(dayKey(d))) d.setDate(d.getDate()-1);
+  while(dset.has(dayKey(d))){ streak++; d.setDate(d.getDate()-1); }
+
+  const mature = state.cards.filter(c=>c.fsrs.stability>=21).length;
+  const leeches = state.cards.filter(isLeech).length;
+  const avgMs = real.length ? real.reduce((s,r)=>s+(r.ms||0),0)/real.length/1000 : 0;
+  const totalMin = Math.round(real.reduce((s,r)=>s+(r.ms||0),0)/60000);
+
+  const stat=(n,l)=>`<div class="stat"><div class="num">${n}</div><div class="lbl">${l}</div></div>`;
+  document.getElementById('dashStats').innerHTML =
+    stat(retention+'%','retenção real') + stat(matureRet+'%','retenção em cards maduros') +
+    stat(streak,'dias seguidos') + stat(reviewed,'revisões no período') +
+    stat(mature,'cards maduros (≥21d)') + stat(leeches,'leeches') +
+    stat(avgMs.toFixed(1)+'s','tempo médio/card') + stat(totalMin+'min','tempo total');
+
+  // heatmap 189 dias (27 col x 7)
+  const counts = {};
+  state.revlog.forEach(r=>counts[r.day]=(counts[r.day]||0)+1);
+  const hm = document.getElementById('heatmap'); hm.innerHTML='';
+  const maxc = Math.max(1,...Object.values(counts));
+  for(let i=188;i>=0;i--){
+    const dt = new Date(Date.now()-i*DAY); const k = dayKey(dt); const n = counts[k]||0;
+    const cell = document.createElement('div'); cell.className='hcell';
+    cell.title = `${k}: ${n} revisão(ões)`;
+    if(n>0){
+      const lvl = n/maxc;
+      cell.style.background = `color-mix(in srgb, var(--accent) ${Math.round(22+lvl*78)}%, var(--paper-2))`;
+    }
+    hm.appendChild(cell);
+  }
+
+  // revisões últimos 21 dias
+  const days=[]; for(let i=20;i>=0;i--) days.push(dayKey(new Date(Date.now()-i*DAY)));
+  const vals = days.map(k=>counts[k]||0);
+  const mx = Math.max(1,...vals);
+  document.getElementById('revChart').innerHTML = vals.map((v,i)=>
+    `<div class="col" title="${days[i]}: ${v}"><i style="height:${Math.max(2,v/mx*100)}%"></i></div>`).join('');
+  document.getElementById('revChartLabels').innerHTML = days.map((k,i)=>
+    `<span>${i%3===0?k.slice(8)+'/'+k.slice(5,7):''}</span>`).join('');
+
+  // previsão 30 dias
+  const fc = new Array(30).fill(0);
+  state.cards.filter(isActive).forEach(c=>{
+    if(c.fsrs.state==='new') return;
+    const diff = Math.floor((new Date(c.fsrs.due) - Date.now())/DAY);
+    if(diff < 0) fc[0]++; else if(diff < 30) fc[diff]++;
+  });
+  const fmx = Math.max(1,...fc);
+  document.getElementById('forecastChart').innerHTML = fc.map((v,i)=>
+    `<div class="col" title="em ${i} dia(s): ${v}"><i class="${i===0?'':'alt'}" style="height:${Math.max(2,v/fmx*100)}%"></i></div>`).join('');
+  document.getElementById('forecastLabels').innerHTML = fc.map((v,i)=>`<span>${i%5===0?(i===0?'hoje':'+'+i):''}</span>`).join('');
+  const sum = fc.reduce((a,b)=>a+b,0);
+  document.getElementById('forecastLegend').textContent =
+    `${sum} revisões previstas nos próximos 30 dias · média de ${Math.round(sum/30)} por dia · pico de ${fmx} em um único dia.`;
+
+  // pontos cegos
+  const bs = document.getElementById('blindspots'); bs.innerHTML='';
+  if(!state.decks.length) bs.innerHTML = '<div class="sub">Sem dados.</div>';
+  state.decks.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR')).forEach(dk=>{
+    const lg = real.filter(r=>r.deckId===dk.id);
+    const ret = lg.length ? Math.round(100*lg.filter(r=>r.rating>=2).length/lg.length) : null;
+    const row = document.createElement('div'); row.className='tablerow';
+    row.innerHTML = `<span>${esc(dk.name)} <span class="sub">· ${lg.length} revisões</span></span>
+      <span class="${ret===null?'':(ret<80?'bad':'ok')}">${ret===null?'sem dados':ret+'%'}</span>`;
+    bs.appendChild(row);
+  });
+
+  // maturidade
+  const buckets = [
+    ['Novos', c=>c.fsrs.state==='new'],
+    ['Aprendendo (<1d)', c=>c.fsrs.state!=='new' && c.fsrs.stability<1],
+    ['Jovens (1–7d)', c=>c.fsrs.stability>=1 && c.fsrs.stability<7],
+    ['Consolidando (7–21d)', c=>c.fsrs.stability>=7 && c.fsrs.stability<21],
+    ['Maduros (21–90d)', c=>c.fsrs.stability>=21 && c.fsrs.stability<90],
+    ['Sólidos (≥90d)', c=>c.fsrs.stability>=90]
+  ];
+  document.getElementById('maturity').innerHTML = buckets.map(([lbl,fn])=>{
+    const n = state.cards.filter(fn).length;
+    const pct = total? Math.round(100*n/total):0;
+    return `<div class="tablerow"><span>${lbl}</span><span><b>${n}</b> <span class="sub">(${pct}%)</span></span></div>`;
+  }).join('');
+
+  // calibração
+  const confs = [['certo','Tenho certeza'],['meio','Mais ou menos'],['chute','Chutei']];
+  const cal = document.getElementById('calib');
+  const withConf = real.filter(r=>r.conf);
+  if(!withConf.length){ cal.innerHTML = '<div class="sub">Sem dados — ative "pedir nível de confiança" nos Ajustes.</div>'; }
+  else cal.innerHTML = confs.map(([k,lbl])=>{
+    const lg = withConf.filter(r=>r.conf===k);
+    const acc = lg.length? Math.round(100*lg.filter(r=>r.rating>=2).length/lg.length):null;
+    const warn = k==='certo' && acc!==null && acc<90;
+    return `<div class="tablerow"><span>${lbl} <span class="sub">· ${lg.length} respostas</span></span>
+      <span class="${acc===null?'':(warn?'bad':'ok')}">${acc===null?'—':acc+'% de acerto'}</span></div>`;
+  }).join('');
+}
+
+/* =========================================================================
+   12. AJUSTES
+   ========================================================================= */
+function fillSettings(){
+  const s = state.settings;
+  const set=(id,v)=>{const e=document.getElementById(id); if(e.type==='checkbox') e.checked=!!v; else e.value=v;};
+  set('stNew',s.newPerDay); set('stMax',s.maxReviews); set('stRet',s.desiredRetention);
+  set('stMaxIvl',s.maxInterval); set('stSteps',s.learnSteps.join(', ')); set('stRelSteps',s.relearnSteps.join(', '));
+  set('stLeech',s.leechThreshold); set('stLeechAct',s.leechAction);
+  set('stFuzz',s.fuzz); set('stConf',s.askConfidence); set('stTimer',s.showTimer); set('stBuryRel',s.burySiblings);
+  set('stTheme',s.theme); set('stFont',String(s.fontScale));
+  try{
+    const bytes = new Blob([JSON.stringify(state)]).size;
+    document.getElementById('storageInfo').textContent =
+      `${state.cards.length} cards · ${state.revlog.length} registros de revisão · ~${(bytes/1024).toFixed(0)} KB salvos neste navegador.`;
+  }catch(e){}
+  odRefreshButtons();
+}
+const settingBinds = [
+  ['stNew','newPerDay','int'],['stMax','maxReviews','int'],['stRet','desiredRetention','float'],
+  ['stMaxIvl','maxInterval','int'],['stSteps','learnSteps','list'],['stRelSteps','relearnSteps','list'],
+  ['stLeech','leechThreshold','int'],['stLeechAct','leechAction','str'],
+  ['stFuzz','fuzz','bool'],['stConf','askConfidence','bool'],['stTimer','showTimer','bool'],['stBuryRel','burySiblings','bool'],
+  ['stTheme','theme','str'],['stFont','fontScale','float']
+];
+settingBinds.forEach(([id,key,kind])=>{
+  document.getElementById(id).addEventListener('change', e=>{
+    const v = e.target.value;
+    if(kind==='int') state.settings[key] = clamp(parseInt(v)||0, 0, 99999);
+    else if(kind==='float') state.settings[key] = parseFloat(v)||0;
+    else if(kind==='bool') state.settings[key] = e.target.checked;
+    else if(kind==='list') state.settings[key] = v.split(/[,;]/).map(x=>parseFloat(x.trim())).filter(x=>!isNaN(x)&&x>0);
+    else state.settings[key] = v;
+    if(key==='desiredRetention') state.settings[key] = clamp(state.settings[key], 0.70, 0.97);
+    save(); applyTheme(); renderDeckList();
+    if(key==='desiredRetention'||key==='theme'||key==='fontScale') toast('Ajuste aplicado.');
+  });
+});
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', state.settings.theme||'palha');
+  document.documentElement.style.setProperty('--fscale', state.settings.fontScale||1);
+}
+
+/* dados */
+document.getElementById('exportJson').addEventListener('click',()=>{
+  download(JSON.stringify(state,null,2),'repertorio-backup-'+today()+'.json','application/json');
+});
+document.getElementById('exportCsv').addEventListener('click',()=>{
+  const rows = state.cards.map(c=>{
+    const f = c.type==='cloze' ? c.text : c.front;
+    const b = c.type==='cloze' ? '' : c.back;
+    const deck = (deckById(c.deckId)||{}).name||'';
+    return [f,b,(c.source||''),c.tags.concat(deck.replace(/\s+/g,'-')).join(' ')]
+      .map(x=>String(x).replace(/\t/g,' ').replace(/\n/g,'<br>')).join('\t');
+  });
+  download(rows.join('\n'),'repertorio-cards-'+today()+'.tsv','text/tab-separated-values');
+});
+document.getElementById('importJsonBtn').addEventListener('click',()=>{
+  const body=document.getElementById('modalBody');
+  body.innerHTML = `<h3>Importar backup</h3>
+    <div class="sub">Cole o JSON exportado. Escolha substituir tudo ou mesclar os baralhos.</div>
+    <label>Conteúdo</label><textarea id="ibTxt" rows="8"></textarea>
+    <label style="margin-top:10px;"><input type="checkbox" id="ibMerge" checked>Mesclar com os dados atuais (desmarque para substituir tudo)</label>
+    <div class="modal-actions"><button class="btn ghost" id="ibC">Cancelar</button><button class="btn" id="ibOk">Importar</button></div>`;
+  openModal();
+  body.querySelector('#ibC').addEventListener('click',closeModal);
+  body.querySelector('#ibOk').addEventListener('click',()=>{
+    try{
+      const p = JSON.parse(body.querySelector('#ibTxt').value);
+      if(!p.cards) throw new Error('formato');
+      let orphanLogs = 0;
+      if(body.querySelector('#ibMerge').checked){
+        // Mapas explícitos oldId->newId para baralho, nota e card. O revlog importado
+        // é remapeado pelo cardId através desse mapa — nunca fica apontando para um
+        // card que virou outro, ou para nenhum (bug P0 corrigido).
+        const deckMap = {};
+        (p.decks||[]).forEach(d=>{ deckMap[d.id] = ensureDeck(d.name).id; });
+        const noteMap = {};
+        const cardMap = {};
+        const existingCardIds = new Set(state.cards.map(c=>c.id));
+        const existingLogIds = new Set(state.revlog.map(r=>r.id));
+        (p.cards||[]).forEach(c=>{
+          const oldCardId = c.id, oldNoteId = c.noteId;
+          if(oldNoteId!=null){
+            if(!noteMap[oldNoteId]) noteMap[oldNoteId] = uid();
+            c.noteId = noteMap[oldNoteId];
+          }
+          if(existingCardIds.has(c.id)) c.id = uid();
+          existingCardIds.add(c.id);
+          cardMap[oldCardId] = c.id;
+          c.deckId = deckMap[c.deckId] || ensureDeck('Importado').id;
+          state.cards.push(c);
+        });
+        (p.revlog||[]).forEach(r=>{
+          const newCardId = cardMap[r.cardId];
+          if(!newCardId){ orphanLogs++; return; } // card não veio junto neste backup: descarta em vez de apontar errado
+          r.cardId = newCardId;
+          r.deckId = deckMap[r.deckId] || r.deckId;
+          if(existingLogIds.has(r.id)) r.id = uid();
+          existingLogIds.add(r.id);
+          state.revlog.push(r);
+        });
+      } else {
+        state.decks = p.decks||[]; state.cards = p.cards||[]; state.revlog = p.revlog||[];
+        state.settings = Object.assign({}, DEFAULT_SETTINGS, p.settings||{});
+      }
+      save(); closeModal(); applyTheme(); renderDeckList(); renderHome(); refreshDeckSelects(); fillSettings();
+      toast(orphanLogs ? `Backup mesclado — ${orphanLogs} registro(s) de histórico órfão descartado(s).` : 'Backup importado.');
+    }catch(e){ toast('JSON inválido.'); }
+  });
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  confirmModal('Apagar TODOS os baralhos, cards e histórico? Faça o backup antes.',()=>{
+    state = { version:2, decks:[], cards:[], revlog:[], settings:Object.assign({},DEFAULT_SETTINGS) };
+    save(); currentDeck=null; session=null; applyTheme(); renderDeckList(); renderHome(); refreshDeckSelects(); fillSettings();
+    toast('Tudo apagado.');
+  });
+});
+function download(content, name, mime){
+  try{
+    const blob = new Blob([content], {type:mime});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  }catch(e){ toast('Não foi possível gerar o arquivo aqui — copie o backup pela tela de ajustes.'); }
+}
+
+/* =========================================================================
+   13. MODAIS
+   ========================================================================= */
+function openModal(){ document.getElementById('modalBg').classList.add('show'); }
+function closeModal(){ document.getElementById('modalBg').classList.remove('show'); }
+document.getElementById('modalBg').addEventListener('click', e=>{ if(e.target.id==='modalBg') closeModal(); });
+
+function confirmModal(msg, onYes){
+  const body=document.getElementById('modalBody');
+  body.innerHTML = `<h3>Confirmar</h3><p style="font-size:.92rem;line-height:1.6;">${esc(msg)}</p>
+    <div class="modal-actions"><button class="btn ghost" id="cNo">Cancelar</button><button class="btn" id="cYes">Confirmar</button></div>`;
+  openModal();
+  body.querySelector('#cNo').addEventListener('click',closeModal);
+  body.querySelector('#cYes').addEventListener('click',()=>{ closeModal(); onYes(); });
+}
+function promptModal(title, placeholder, initial, onOk){
+  const body=document.getElementById('modalBody');
+  body.innerHTML = `<h3>${esc(title)}</h3>
+    <input type="text" id="pIn" placeholder="${esc(placeholder)}" value="${esc(initial||'')}">
+    <div class="modal-actions"><button class="btn ghost" id="pNo">Cancelar</button><button class="btn" id="pOk">OK</button></div>`;
+  openModal();
+  const inp = body.querySelector('#pIn'); setTimeout(()=>inp.focus(),30);
+  const go_=()=>{ const v=inp.value.trim(); if(v){ closeModal(); onOk(v); } };
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault(); go_();} });
+  body.querySelector('#pNo').addEventListener('click',closeModal);
+  body.querySelector('#pOk').addEventListener('click',go_);
+}
+
+/* =========================================================================
+   14. TECLADO
+   ========================================================================= */
+document.addEventListener('keydown', e=>{
+  const tag = (document.activeElement && document.activeElement.tagName)||'';
+  const typing = /INPUT|TEXTAREA|SELECT/.test(tag);
+  const modalOpen = document.getElementById('modalBg').classList.contains('show');
+  if((e.ctrlKey||e.metaKey) && !e.altKey && e.key.toLowerCase()==='b'){ e.preventDefault(); toggleSidebar(); return; }
+  if(e.key==='Escape'){
+    if(modalOpen){ closeModal(); return; }
+    if(sbOpen && !isPinned()){ closeSidebar(true); return; }
+    if(view==='study' && session){ session=null; go('home'); return; }
+  }
+  if(typing || modalOpen) return;
+  if(e.key==='[' && !e.ctrlKey && !e.metaKey){ toggleSidebar(); return; }
+
+  if(view==='study' && session && session.idx < session.queue.length){
+    if(e.code==='Space' || e.key==='Enter'){ e.preventDefault(); if(!session.shown) reveal(); return; }
+    if(!session.shown && state.settings.askConfidence && ['1','2','3'].includes(e.key)){
+      const map={'1':'chute','2':'meio','3':'certo'};
+      session.conf = map[e.key];
+      const btn = document.querySelector(`#confRow [data-c="${map[e.key]}"]`);
+      if(btn){ document.querySelectorAll('#confRow .pill-toggle').forEach(x=>x.classList.remove('on')); btn.classList.add('on'); }
+      reveal(); return;
+    }
+    if(session.shown && ['1','2','3','4'].includes(e.key)){ grade(parseInt(e.key)); return; }
+    if(e.key==='e'||e.key==='E'){ studyTool('edit'); return; }
+    if(e.key==='f'||e.key==='F'){ studyTool('flag'); return; }
+    if(e.key==='u'||e.key==='U'){ studyTool('undo'); return; }
+    if(e.key==='S'&&e.shiftKey){ studyTool('susp'); return; }
+  }
+  const nav = {h:'home',s:'study',a:'add',b:'browse',d:'dash'};
+  if(!e.ctrlKey && !e.metaKey && !e.altKey && nav[e.key.toLowerCase()] && !(e.key==='S'&&e.shiftKey)){
+    go(nav[e.key.toLowerCase()]);
+  }
+});
+
+/* =========================================================================
+   15. BOOT
+   ========================================================================= */
+function unburyIfNeeded(){
+  let changed=false;
+  state.cards.forEach(c=>{ if(c.buriedUntil && new Date(c.buriedUntil) <= now()){ c.buriedUntil=null; changed=true; } });
+  if(changed) save();
+}
+unburyIfNeeded();
+applyTheme();
+refreshDeckSelects();
+renderDeckList();
+renderHome();
+setInterval(()=>{ unburyIfNeeded(); if(view==='home') renderDeckList(); }, 60000);
+
+})();
+</script>
+</body>
+</html>
